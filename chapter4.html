@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Object-Oriented Programming - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .code-block { background: #2d3748; border-radius: 8px; overflow: hidden; }
+        .code-header { background: #4a5568; padding: 12px 16px; font-size: 14px; color: #e2e8f0; }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: #718096; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .copy-btn:hover { background: #a0aec0; }
+        .concept-card { transition: all 0.3s ease; }
+        .concept-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .diff-table { border-collapse: collapse; width: 100%; }
+        .diff-table th, .diff-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        .diff-table th { background: #f7fafc; font-weight: 600; }
+        .bookmark-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); border: none; padding: 8px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .bookmark-btn:hover { background: white; transform: scale(1.1); }
+        .bookmark-btn.bookmarked { background: #fbbf24; color: white; }
+        .oop-diagram { background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .class-box { background: #3b82f6; color: white; padding: 12px; margin: 8px; border-radius: 8px; text-align: center; }
+        .object-box { background: #10b981; color: white; padding: 12px; margin: 8px; border-radius: 8px; text-align: center; }
+        .inheritance-arrow { font-size: 24px; color: #6b7280; margin: 0 16px; }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 1</a>
+                    <a href="chapter2.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 2</a>
+                    <a href="chapter3.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 3</a>
+                    <a href="chapter4.html" class="text-blue-600 font-medium">Chapter 4</a>
+                    <a href="chapter5.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 5</a>
+                    <a href="papers.html" class="text-gray-600 hover:text-blue-600 transition-colors">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chapter Header -->
+    <section class="bg-gradient-to-r from-orange-600 to-red-600 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white">
+                <nav class="text-orange-200 mb-4">
+                    <a href="index.html" class="hover:text-white">Home</a> / 
+                    <span>Chapter 4</span>
+                </nav>
+                <h1 class="text-4xl font-display font-bold mb-4">Object-Oriented Programming</h1>
+                <p class="text-xl text-orange-100 max-w-3xl">
+                    Learn OOP concepts including classes, objects, inheritance, polymorphism, encapsulation, and abstraction in PHP.
+                </p>
+                <button class="bookmark-btn" onclick="toggleBookmark('chapter4')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-24">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Table of Contents</h3>
+                    <nav class="space-y-2">
+                        <a href="#introduction" class="block text-blue-600 hover:text-blue-800 py-1">OOP Introduction</a>
+                        <a href="#concepts" class="block text-gray-600 hover:text-blue-600 py-1">OOP Concepts</a>
+                        <a href="#classes" class="block text-gray-600 hover:text-blue-600 py-1">Classes</a>
+                        <a href="#objects" class="block text-gray-600 hover:text-blue-600 py-1">Objects</a>
+                        <a href="#access-modifiers" class="block text-gray-600 hover:text-blue-600 py-1">Access Modifiers</a>
+                        <a href="#inheritance" class="block text-gray-600 hover:text-blue-600 py-1">Inheritance</a>
+                        <a href="#polymorphism" class="block text-gray-600 hover:text-blue-600 py-1">Polymorphism</a>
+                        <a href="#examples" class="block text-gray-600 hover:text-blue-600 py-1">Code Examples</a>
+                        <a href="#quiz" class="block text-gray-600 hover:text-blue-600 py-1">Chapter Quiz</a>
+                    </nav>
+                    
+                    <div class="mt-6 pt-6 border-t">
+                        <button onclick="startQuiz('chapter4')" class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors">
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- OOP Introduction -->
+                <section id="introduction" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Introduction to Object-Oriented Programming</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 mb-4">
+                            Object-Oriented Programming (OOP) is a programming paradigm that organizes code around objects and classes. Unlike procedural programming which focuses on procedures or functions, OOP focuses on creating objects that contain both data and functions.
+                        </p>
+                        
+                        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-6">
+                            <h4 class="font-semibold text-orange-800 mb-2">Benefits of OOP:</h4>
+                            <ul class="space-y-2 text-orange-700">
+                                <li>• <strong>Modularity:</strong> Code is organized into reusable objects</li>
+                                <li>• <strong>Reusability:</strong> Objects can be reused across different programs</li>
+                                <li>• <strong>Maintainability:</strong> Easier to update and debug code</li>
+                                <li>• <strong>Scalability:</strong> Better structure for large applications</li>
+                                <li>• <strong>Encapsulation:</strong> Data is protected from external interference</li>
+                                <li>• <strong>Inheritance:</strong> Create new classes based on existing ones</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="oop-diagram">
+                            <h4 class="font-semibold text-gray-800 mb-4">OOP vs Procedural Programming:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-blue-100 p-4 rounded-lg">
+                                    <h5 class="font-semibold text-blue-800 mb-2">Procedural Programming</h5>
+                                    <ul class="text-blue-700 text-sm space-y-1">
+                                        <li>• Focus on procedures/functions</li>
+                                        <li>• Data and functions are separate</li>
+                                        <li>• Top-down approach</li>
+                                        <li>• Less code reusability</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-green-100 p-4 rounded-lg">
+                                    <h5 class="font-semibold text-green-800 mb-2">Object-Oriented Programming</h5>
+                                    <ul class="text-green-700 text-sm space-y-1">
+                                        <li>• Focus on objects and classes</li>
+                                        <li>• Data and functions are bundled</li>
+                                        <li>• Bottom-up approach</li>
+                                        <li>• High code reusability</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- OOP Concepts -->
+                <section id="concepts" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Core OOP Concepts</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">Class</h4>
+                            <p class="text-blue-700 text-sm">A blueprint or template for creating objects. Defines properties and methods.</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-800 mb-2">Object</h4>
+                            <p class="text-green-700 text-sm">An instance of a class. Contains actual data values and can call methods.</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800 mb-2">Inheritance</h4>
+                            <p class="text-purple-700 text-sm">Creating new classes based on existing classes, inheriting their properties and methods.</p>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-orange-800 mb-2">Polymorphism</h4>
+                            <p class="text-orange-700 text-sm">Same method name can perform different tasks based on the object context.</p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-800 mb-2">Encapsulation</h4>
+                            <p class="text-red-700 text-sm">Bundling data and methods into a single unit and controlling access to them.</p>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-800 mb-2">Abstraction</h4>
+                            <p class="text-indigo-700 text-sm">Hiding complex implementation details and showing only essential features.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="oop-diagram">
+                        <h4 class="font-semibold text-gray-800 mb-4">OOP Relationships:</h4>
+                        <div class="flex flex-col items-center">
+                            <div class="class-box w-48">Class (Blueprint)</div>
+                            <div class="inheritance-arrow">↓</div>
+                            <div class="flex space-x-4">
+                                <div class="object-box w-32">Object 1</div>
+                                <div class="object-box w-32">Object 2</div>
+                                <div class="object-box w-32">Object 3</div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-4">Multiple objects can be created from a single class</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Classes -->
+                <section id="classes" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Classes in PHP</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        A class is a user-defined data type that consists of data members (properties) and member functions (methods). Classes are defined using the <code>class</code> keyword.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Basic Class Definition</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Basic class definition
+class Book {
+    // Properties (data members)
+    public $title;
+    public $author;
+    public $price;
+    public $isbn;
+    
+    // Methods (member functions)
+    public function displayInfo() {
+        echo "Title: " . $this->title . "\n";
+        echo "Author: " . $this->author . "\n";
+        echo "Price: $" . $this->price . "\n";
+        echo "ISBN: " . $this->isbn . "\n";
+    }
+    
+    public function applyDiscount($discountPercent) {
+        $discountAmount = $this->price * ($discountPercent / 100);
+        $this->price -= $discountAmount;
+        return $this->price;
+    }
+    
+    public function getTitle() {
+        return $this->title;
+    }
+    
+    public function setTitle($title) {
+        $this->title = $title;
+    }
+}
+
+// Class with constructor
+class Student {
+    public $name;
+    public $age;
+    public $grade;
+    public $courses = [];
+    
+    // Constructor
+    public function __construct($name, $age, $grade) {
+        $this->name = $name;
+        $this->age = $age;
+        $this->grade = $grade;
+        echo "Student object created for $name\n";
+    }
+    
+    // Destructor
+    public function __destruct() {
+        echo "Student object destroyed for $this->name\n";
+    }
+    
+    public function enrollCourse($course) {
+        $this->courses[] = $course;
+        echo "$this->name enrolled in $course\n";
+    }
+    
+    public function displayInfo() {
+        echo "Student Information:\n";
+        echo "Name: $this->name\n";
+        echo "Age: $this->age\n";
+        echo "Grade: $this->grade\n";
+        echo "Courses: " . implode(", ", $this->courses) . "\n";
+    }
+    
+    public function calculateAverage($scores) {
+        return array_sum($scores) / count($scores);
+    }
+}
+
+// Class with private properties
+class BankAccount {
+    private $accountNumber;
+    private $balance;
+    private $accountHolder;
+    
+    public function __construct($accountNumber, $accountHolder, $initialBalance = 0) {
+        $this->accountNumber = $accountNumber;
+        $this->accountHolder = $accountHolder;
+        $this->balance = $initialBalance;
+    }
+    
+    public function deposit($amount) {
+        if ($amount > 0) {
+            $this->balance += $amount;
+            echo "Deposited: $$amount\n";
+            return true;
+        }
+        return false;
+    }
+    
+    public function withdraw($amount) {
+        if ($amount > 0 && $amount <= $this->balance) {
+            $this->balance -= $amount;
+            echo "Withdrawn: $$amount\n";
+            return true;
+        }
+        return false;
+    }
+    
+    public function getBalance() {
+        return $this->balance;
+    }
+    
+    public function getAccountInfo() {
+        return [
+            "accountNumber" => $this->accountNumber,
+            "accountHolder" => $this->accountHolder,
+            "balance" => $this->balance
+        ];
+    }
+}
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Class Components:</h4>
+                        <ul class="space-y-1 text-blue-700">
+                            <li>• <strong>Properties:</strong> Variables that hold object data</li>
+                            <li>• <strong>Methods:</strong> Functions that define object behavior</li>
+                            <li>• <strong>Constructor:</strong> Special method called when object is created</li>
+                            <li>• <strong>Destructor:</strong> Special method called when object is destroyed</li>
+                            <li>• <strong>$this:</strong> Keyword to refer to current object</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Objects -->
+                <section id="objects" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Objects in PHP</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Objects are instances of classes. They are created using the <code>new</code> keyword and contain actual data values. Each object has its own set of properties and can call the methods defined in its class.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Creating and Using Objects</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Creating objects from classes
+$book1 = new Book();
+$book2 = new Book();
+
+// Setting object properties
+$book1->title = "PHP Programming";
+$book1->author = "John Smith";
+$book1->price = 49.99;
+$book1->isbn = "978-0123456789";
+
+$book2->title = "Web Development";
+$book2->author = "Jane Doe";
+$book2->price = 39.99;
+$book2->isbn = "978-9876543210";
+
+// Calling object methods
+echo "Book 1 Information:\n";
+$book1->displayInfo();
+
+echo "\nBook 2 Information:\n";
+$book2->displayInfo();
+
+// Applying discount
+echo "\nApplying 10% discount to Book 1:\n";
+$newPrice = $book1->applyDiscount(10);
+echo "New price: $$newPrice\n";
+
+// Creating Student objects
+$student1 = new Student("Alice Brown", 18, "A");
+$student2 = new Student("Charlie Davis", 19, "B");
+
+// Using object methods
+$student1->enrollCourse("Mathematics");
+$student1->enrollCourse("Physics");
+$student1->enrollCourse("Chemistry");
+
+echo "\n";
+$student2->enrollCourse("English");
+$student2->enrollCourse("History");
+
+// Display student information
+echo "\n";
+$student1->displayInfo();
+
+echo "\n";
+$student2->displayInfo();
+
+// Calculate average score
+$scores1 = [85, 92, 78, 88, 90];
+$average1 = $student1->calculateAverage($scores1);
+echo "\nAlice's average score: " . number_format($average1, 2) . "\n";
+
+// Using BankAccount class
+$account1 = new BankAccount("ACC001", "John Doe", 1000);
+$account2 = new BankAccount("ACC002", "Jane Smith", 500);
+
+echo "\nBanking Operations:\n";
+echo "==================\n";
+
+$account1->deposit(200);
+$account1->withdraw(100);
+echo "Account 1 balance: $" . $account1->getBalance() . "\n";
+
+$account2->deposit(300);
+echo "Account 2 balance: $" . $account2->getBalance() . "\n";
+
+// Multiple objects of same class
+echo "\nCreating multiple Book objects:\n";
+$books = [];
+$bookData = [
+    ["PHP Basics", "Mike Johnson", 29.99],
+    ["Advanced PHP", "Sarah Wilson", 59.99],
+    ["PHP Frameworks", "David Lee", 45.99]
+];
+
+foreach($bookData as $data) {
+    $book = new Book();
+    $book->title = $data[0];
+    $book->author = $data[1];
+    $book->price = $data[2];
+    $books[] = $book;
+}
+
+// Display all books
+foreach($books as $index => $book) {
+    echo "\nBook " . ($index + 1) . ":\n";
+    $book->displayInfo();
+}
+
+// Object comparison
+if ($book1 === $book2) {
+    echo "\nBoth variables refer to the same object";
+} else {
+    echo "\nBoth variables refer to different objects";
+}
+
+// Cloning objects
+$book3 = clone $book1;
+$book3->title = "Cloned Book";
+echo "\nOriginal book title: " . $book1->title . "\n";
+echo "Cloned book title: " . $book3->title . "\n";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="oop-diagram">
+                        <h4 class="font-semibold text-gray-800 mb-4">Object Creation Process:</h4>
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="class-box w-48">Class Definition</div>
+                            <div class="inheritance-arrow">↓ (new keyword)</div>
+                            <div class="object-box w-48">Object Instance</div>
+                            <div class="text-sm text-gray-600">Memory allocated, properties initialized</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Access Modifiers -->
+                <section id="access-modifiers" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Access Modifiers</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Access modifiers control the visibility and accessibility of class properties and methods. PHP provides three access modifiers: public, private, and protected.
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="diff-table">
+                            <thead>
+                                <tr>
+                                    <th>Modifier</th>
+                                    <th>Description</th>
+                                    <th>Access From</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>Accessible from anywhere</td>
+                                    <td>Class, Child Classes, Outside</td>
+                                </tr>
+                                <tr>
+                                    <td>private</td>
+                                    <td>Only accessible within the same class</td>
+                                    <td>Only within the class</td>
+                                </tr>
+                                <tr>
+                                    <td>protected</td>
+                                    <td>Accessible within class and child classes</td>
+                                    <td>Class and Child Classes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Access Modifiers Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Class demonstrating access modifiers
+class Employee {
+    // Public properties - accessible everywhere
+    public $name;
+    public $department;
+    
+    // Private properties - only accessible within this class
+    private $salary;
+    private $employeeId;
+    
+    // Protected properties - accessible in this class and child classes
+    protected $joinDate;
+    protected $performanceRating;
+    
+    public function __construct($name, $department, $salary, $employeeId) {
+        $this->name = $name;
+        $this->department = $department;
+        $this->salary = $salary;
+        $this->employeeId = $employeeId;
+        $this->joinDate = date("Y-m-d");
+        $this->performanceRating = "Good";
+    }
+    
+    // Public method - accessible everywhere
+    public function getBasicInfo() {
+        return "Name: $this->name, Department: $this->department";
+    }
+    
+    // Private method - only accessible within this class
+    private function calculateBonus() {
+        return $this->salary * 0.1; // 10% bonus
+    }
+    
+    // Protected method - accessible in this class and child classes
+    protected function getPerformanceSummary() {
+        return "Performance: $this->performanceRating, Join Date: $this->joinDate";
+    }
+    
+    // Public method that uses private method
+    public function getSalaryWithBonus() {
+        $bonus = $this->calculateBonus();
+        return $this->salary + $bonus;
+    }
+    
+    // Public method that uses protected method
+    public function getFullInfo() {
+        $basicInfo = $this->getBasicInfo();
+        $performance = $this->getPerformanceSummary();
+        return "$basicInfo, $performance";
+    }
+    
+    // Getter for private property
+    public function getSalary() {
+        return $this->salary;
+    }
+    
+    // Setter for private property
+    public function setSalary($salary) {
+        if ($salary > 0) {
+            $this->salary = $salary;
+        }
+    }
+}
+
+// Child class to demonstrate inheritance and access
+class Manager extends Employee {
+    private $teamSize;
+    
+    public function __construct($name, $department, $salary, $employeeId, $teamSize) {
+        parent::__construct($name, $department, $salary, $employeeId);
+        $this->teamSize = $teamSize;
+    }
+    
+    // Child class can access protected members
+    public function getTeamInfo() {
+        $performance = $this->getPerformanceSummary(); // Protected method from parent
+        return "Manager: $this->name, Team Size: $this->teamSize, $performance";
+    }
+    
+    // Cannot access private members of parent class
+    // This would cause an error:
+    // public function getManagerSalary() {
+    //     return $this->salary; // Error - private property
+    // }
+}
+
+// Demonstration
+echo "=== ACCESS MODIFIERS DEMONSTRATION ===\n\n";
+
+// Create employee object
+$emp1 = new Employee("John Doe", "IT", 50000, "EMP001");
+
+// Access public properties
+echo "Public Property Access:\n";
+echo "Name: " . $emp1->name . "\n";        // Works - public
+echo "Department: " . $emp1->department . "\n"; // Works - public
+
+// Access private properties - ERROR
+// echo "Salary: " . $emp1->salary . "\n";    // Error - private
+// echo "Employee ID: " . $emp1->employeeId . "\n"; // Error - private
+
+// Access protected properties - ERROR
+// echo "Join Date: " . $emp1->joinDate . "\n"; // Error - protected
+
+// Use getter method for private property
+echo "\nUsing Getter Methods:\n";
+echo "Salary: $" . $emp1->getSalary() . "\n"; // Works - public method
+
+// Call public methods
+echo "\nPublic Method Access:\n";
+echo $emp1->getBasicInfo() . "\n";          // Works - public method
+echo $emp1->getSalaryWithBonus() . "\n";     // Works - public method
+
+// Call private method - ERROR
+// $emp1->calculateBonus(); // Error - private method
+
+// Call protected method - ERROR
+// $emp1->getPerformanceSummary(); // Error - protected method
+
+// Create manager object (child class)
+echo "\n=== CHILD CLASS ACCESS ===\n\n";
+$mgr1 = new Manager("Jane Smith", "HR", 70000, "MGR001", 5);
+
+// Child class can access inherited public properties
+echo "Manager Name: " . $mgr1->name . "\n";
+
+// Child class can access protected methods from parent
+echo $mgr1->getTeamInfo() . "\n";
+
+// Child class cannot access private properties from parent
+// echo "Manager Salary: " . $mgr1->salary . "\n"; // Error
+
+// Demonstrate encapsulation benefits
+echo "\n=== ENCAPSULATION BENEFITS ===\n\n";
+
+// Direct modification of public property
+$emp1->name = "John Modified"; // Works but not recommended
+echo "Modified Name: " . $emp1->name . "\n";
+
+// Proper way to modify using setter
+$emp1->setSalary(55000);
+echo "Updated Salary: $" . $emp1->getSalary() . "\n";
+
+// Validation in setter prevents invalid data
+$emp1->setSalary(-1000); // Won't work due to validation
+echo "Salary after invalid attempt: $" . $emp1->getSalary() . "\n";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                        <h4 class="font-semibold text-green-800 mb-2">Best Practices for Access Modifiers:</h4>
+                        <ul class="space-y-1 text-green-700">
+                            <li>• Use private for internal implementation details</li>
+                            <li>• Use protected for properties/methods meant for inheritance</li>
+                            <li>• Use public for the class interface (API)</li>
+                            <li>• Always use getter/setter methods for private properties</li>
+                            <li>• Validate data in setter methods</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Inheritance -->
+                <section id="inheritance" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Inheritance</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Inheritance is a mechanism where a new class (child class) is created based on an existing class (parent class). The child class inherits properties and methods from the parent class and can add its own specific features.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Inheritance Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Parent class
+class Vehicle {
+    protected $brand;
+    protected $model;
+    protected $year;
+    protected $color;
+    
+    public function __construct($brand, $model, $year, $color) {
+        $this->brand = $brand;
+        $this->model = $model;
+        $this->year = $year;
+        $this->color = $color;
+    }
+    
+    public function startEngine() {
+        return "The $this->brand $this->model engine is starting...";
+    }
+    
+    public function stopEngine() {
+        return "The $this->brand $this->model engine is stopping...";
+    }
+    
+    public function getInfo() {
+        return "$this->year $this->color $this->brand $this->model";
+    }
+    
+    public function getAge() {
+        $currentYear = date("Y");
+        return $currentYear - $this->year;
+    }
+}
+
+// Child class - Car (inherits from Vehicle)
+class Car extends Vehicle {
+    private $doors;
+    private $fuelType;
+    
+    public function __construct($brand, $model, $year, $color, $doors, $fuelType) {
+        // Call parent constructor
+        parent::__construct($brand, $model, $year, $color);
+        
+        // Initialize child-specific properties
+        $this->doors = $doors;
+        $this->fuelType = $fuelType;
+    }
+    
+    // Override parent method
+    public function startEngine() {
+        return parent::startEngine() . " Vroom vroom! 🚗";
+    }
+    
+    // Child-specific method
+    public function honk() {
+        return "Beep beep! 🎺";
+    }
+    
+    public function openTrunk() {
+        return "Trunk is now open.";
+    }
+    
+    public function getCarInfo() {
+        $basicInfo = $this->getInfo();
+        return "$basicInfo, $this->doors doors, $this->fuelType engine";
+    }
+}
+
+// Child class - Motorcycle (inherits from Vehicle)
+class Motorcycle extends Vehicle {
+    private $engineType;
+    private $hasSidecar;
+    
+    public function __construct($brand, $model, $year, $color, $engineType, $hasSidecar = false) {
+        parent::__construct($brand, $model, $year, $color);
+        $this->engineType = $engineType;
+        $this->hasSidecar = $hasSidecar;
+    }
+    
+    // Override parent method
+    public function startEngine() {
+        return parent::startEngine() . " Vroooom! 🏍️";
+    }
+    
+    // Child-specific method
+    public function wheelie() {
+        return "Performing a wheelie! 🎪";
+    }
+    
+    public function lean($direction) {
+        return "Leaning $direction into the turn.";
+    }
+    
+    public function getMotorcycleInfo() {
+        $basicInfo = $this->getInfo();
+        $sidecarInfo = $this->hasSidecar ? "with sidecar" : "without sidecar";
+        return "$basicInfo, $this->engineType engine, $sidecarInfo";
+    }
+}
+
+// Grandchild class - ElectricCar (inherits from Car)
+class ElectricCar extends Car {
+    private $batteryCapacity;
+    private $range;
+    
+    public function __construct($brand, $model, $year, $color, $doors, $batteryCapacity, $range) {
+        // Call parent constructor (Car)
+        parent::__construct($brand, $model, $year, $color, $doors, "Electric");
+        
+        $this->batteryCapacity = $batteryCapacity;
+        $this->range = $range;
+    }
+    
+    // Override parent method again
+    public function startEngine() {
+        return "The $this->brand $this->model electric motor is starting... ⚡";
+    }
+    
+    // Grandchild-specific methods
+    public function chargeBattery() {
+        return "Charging the battery... 🔋";
+    }
+    
+    public function getBatteryInfo() {
+        return "Battery: $this->batteryCapacity kWh, Range: $this->range miles";
+    }
+    
+    public function getElectricCarInfo() {
+        $carInfo = $this->getCarInfo();
+        $batteryInfo = $this->getBatteryInfo();
+        return "$carInfo\n$batteryInfo";
+    }
+}
+
+// Demonstration
+echo "=== INHERITANCE DEMONSTRATION ===\n\n";
+
+// Create parent object
+$vehicle1 = new Vehicle("Generic", "Vehicle", 2020, "Black");
+echo "PARENT CLASS (Vehicle):\n";
+echo $vehicle1->getInfo() . "\n";
+echo $vehicle1->startEngine() . "\n\n";
+
+// Create child objects
+echo "CHILD CLASSES:\n";
+echo "===============\n\n";
+
+$car1 = new Car("Toyota", "Camry", 2022, "Blue", 4, "Gasoline");
+echo "Car Information:\n";
+echo $car1->getCarInfo() . "\n";
+echo $car1->startEngine() . "\n";
+echo $car1->honk() . "\n";
+echo $car1->openTrunk() . "\n\n";
+
+$motorcycle1 = new Motorcycle("Harley-Davidson", "Street 750", 2021, "Red", "V-Twin");
+echo "Motorcycle Information:\n";
+echo $motorcycle1->getMotorcycleInfo() . "\n";
+echo $motorcycle1->startEngine() . "\n";
+echo $motorcycle1->wheelie() . "\n";
+echo $motorcycle1->lean("left") . "\n\n";
+
+// Create grandchild object
+echo "GRANDCHILD CLASS:\n";
+echo "==================\n\n";
+
+$electricCar1 = new ElectricCar("Tesla", "Model 3", 2023, "White", 4, 75, 263);
+echo "Electric Car Information:\n";
+echo $electricCar1->getElectricCarInfo() . "\n";
+echo $electricCar1->startEngine() . "\n";
+echo $electricCar1->chargeBattery() . "\n";
+echo $electricCar1->honk() . "\n"; // Inherited from Car
+
+// Demonstrate polymorphism
+echo "\n=== POLYMORPHISM DEMONSTRATION ===\n\n";
+
+$vehicles = [
+    new Vehicle("Generic", "Vehicle", 2020, "Black"),
+    new Car("Honda", "Civic", 2022, "Silver", 4, "Gasoline"),
+    new Motorcycle("Yamaha", "R6", 2021, "Blue", "Inline-4"),
+    new ElectricCar("BMW", "i4", 2023, "Green", 4, 83, 270)
+];
+
+foreach($vehicles as $vehicle) {
+    echo $vehicle->startEngine() . "\n";
+}
+
+// Method overriding demonstration
+echo "\n=== METHOD OVERRIDING ===\n\n";
+
+function demonstrateMethod($vehicle, $type) {
+    echo "$type: " . $vehicle->startEngine() . "\n";
+}
+
+demonstrateMethod($vehicle1, "Vehicle");
+demonstrateMethod($car1, "Car");
+demonstrateMethod($motorcycle1, "Motorcycle");
+demonstrateMethod($electricCar1, "ElectricCar");
+
+// Access to inherited methods
+echo "\n=== INHERITED METHODS ===\n\n";
+echo "Car age: " . $car1->getAge() . " years\n"; // Inherited from Vehicle
+echo "Electric Car age: " . $electricCar1->getAge() . " years\n"; // Inherited from Vehicle
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="oop-diagram">
+                        <h4 class="font-semibold text-gray-800 mb-4">Inheritance Hierarchy:</h4>
+                        <div class="flex flex-col items-center">
+                            <div class="class-box w-48">Vehicle (Parent)</div>
+                            <div class="inheritance-arrow">↓</div>
+                            <div class="flex space-x-8">
+                                <div class="class-box w-32">Car</div>
+                                <div class="class-box w-32">Motorcycle</div>
+                            </div>
+                            <div class="inheritance-arrow">↓</div>
+                            <div class="class-box w-32">ElectricCar</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Polymorphism -->
+                <section id="polymorphism" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Polymorphism</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Polymorphism means "many forms" and allows objects of different types to be treated as objects of a common base type. The same method name can perform different tasks based on the object context.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Polymorphism Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Abstract base class demonstrating polymorphism
+abstract class Shape {
+    protected $name;
+    
+    public function __construct($name) {
+        $this->name = $name;
+    }
+    
+    // Abstract method - must be implemented by child classes
+    abstract public function calculateArea();
+    abstract public function calculatePerimeter();
+    
+    // Concrete method - inherited by child classes
+    public function getName() {
+        return $this->name;
+    }
+    
+    public function displayInfo() {
+        $area = $this->calculateArea();
+        $perimeter = $this->calculatePerimeter();
+        return "Shape: $this->name, Area: $area, Perimeter: $perimeter";
+    }
+}
+
+// Circle class
+class Circle extends Shape {
+    private $radius;
+    
+    public function __construct($radius) {
+        parent::__construct("Circle");
+        $this->radius = $radius;
+    }
+    
+    // Implement abstract methods
+    public function calculateArea() {
+        return pi() * $this->radius * $this->radius;
+    }
+    
+    public function calculatePerimeter() {
+        return 2 * pi() * $this->radius;
+    }
+    
+    // Circle-specific method
+    public function getDiameter() {
+        return 2 * $this->radius;
+    }
+}
+
+// Rectangle class
+class Rectangle extends Shape {
+    private $width;
+    private $height;
+    
+    public function __construct($width, $height) {
+        parent::__construct("Rectangle");
+        $this->width = $width;
+        $this->height = $height;
+    }
+    
+    // Implement abstract methods
+    public function calculateArea() {
+        return $this->width * $this->height;
+    }
+    
+    public function calculatePerimeter() {
+        return 2 * ($this->width + $this->height);
+    }
+    
+    // Rectangle-specific method
+    public function isSquare() {
+        return $this->width === $this->height;
+    }
+}
+
+// Triangle class
+class Triangle extends Shape {
+    private $side1;
+    private $side2;
+    private $side3;
+    
+    public function __construct($side1, $side2, $side3) {
+        parent::__construct("Triangle");
+        $this->side1 = $side1;
+        $this->side2 = $side2;
+        $this->side3 = $side3;
+    }
+    
+    // Implement abstract methods
+    public function calculateArea() {
+        // Using Heron's formula
+        $s = $this->calculatePerimeter() / 2;
+        return sqrt($s * ($s - $this->side1) * ($s - $this->side2) * ($s - $this->side3));
+    }
+    
+    public function calculatePerimeter() {
+        return $this->side1 + $this->side2 + $this->side3;
+    }
+    
+    // Triangle-specific method
+    public function getTriangleType() {
+        if ($this->side1 === $this->side2 && $this->side2 === $this->side3) {
+            return "Equilateral";
+        } elseif ($this->side1 === $this->side2 || $this->side2 === $this->side3 || $this->side1 === $this->side3) {
+            return "Isosceles";
+        } else {
+            return "Scalene";
+        }
+    }
+}
+
+// Interface demonstrating polymorphism
+interface Drawable {
+    public function draw();
+    public function getColor();
+    public function setColor($color);
+}
+
+// Class implementing interface
+class ColoredCircle extends Circle implements Drawable {
+    private $color;
+    
+    public function __construct($radius, $color = "black") {
+        parent::__construct($radius);
+        $this->color = $color;
+    }
+    
+    // Implement interface methods
+    public function draw() {
+        return "Drawing a $this->color circle with radius $this->radius";
+    }
+    
+    public function getColor() {
+        return $this->color;
+    }
+    
+    public function setColor($color) {
+        $this->color = $color;
+    }
+}
+
+// Function demonstrating polymorphism
+function processShape(Shape $shape) {
+    echo $shape->displayInfo() . "\n";
+    
+    // Type-specific operations
+    if ($shape instanceof Circle) {
+        echo "Diameter: " . $shape->getDiameter() . "\n";
+    } elseif ($shape instanceof Rectangle) {
+        echo "Is Square: " . ($shape->isSquare() ? "Yes" : "No") . "\n";
+    } elseif ($shape instanceof Triangle) {
+        echo "Triangle Type: " . $shape->getTriangleType() . "\n";
+    }
+    
+    echo "-" . str_repeat("-", 40) . "\n";
+}
+
+// Function for drawable objects
+function drawObject(Drawable $obj) {
+    echo $obj->draw() . "\n";
+}
+
+// Demonstration
+echo "=== POLYMORPHISM DEMONSTRATION ===\n\n";
+
+// Create different shape objects
+$shapes = [
+    new Circle(5),
+    new Rectangle(4, 6),
+    new Triangle(3, 4, 5),
+    new ColoredCircle(3, "red")
+];
+
+// Process all shapes polymorphically
+echo "Processing different shapes:\n";
+echo "============================\n";
+foreach($shapes as $shape) {
+    processShape($shape);
+}
+
+// Method overloading simulation
+echo "\n=== METHOD OVERLOADING SIMULATION ===\n\n";
+
+class Calculator {
+    // Same method name, different parameter types
+    public function calculate($a, $b, $operation = "add") {
+        switch($operation) {
+            case "add":
+                return $a + $b;
+            case "subtract":
+                return $a - $b;
+            case "multiply":
+                return $a * $b;
+            case "divide":
+                return $b != 0 ? $a / $b : "Cannot divide by zero";
+            default:
+                return "Invalid operation";
+        }
+    }
+    
+    // Method with different number of parameters
+    public function calculateArea($shape, ...$params) {
+        switch(strtolower($shape)) {
+            case "circle":
+                return pi() * $params[0] * $params[0];
+            case "rectangle":
+                return $params[0] * $params[1];
+            case "triangle":
+                return 0.5 * $params[0] * $params[1];
+            default:
+                return "Unknown shape";
+        }
+    }
+}
+
+$calc = new Calculator();
+echo "Calculator examples:\n";
+echo "5 + 3 = " . $calc->calculate(5, 3, "add") . "\n";
+echo "10 - 4 = " . $calc->calculate(10, 4, "subtract") . "\n";
+echo "Circle area (radius 5): " . $calc->calculateArea("circle", 5) . "\n";
+echo "Rectangle area (4x6): " . $calc->calculateArea("rectangle", 4, 6) . "\n";
+
+// Interface polymorphism
+echo "\n=== INTERFACE POLYMORPHISM ===\n\n";
+
+$drawableObjects = [
+    new ColoredCircle(5, "blue"),
+    new ColoredCircle(7, "green")
+];
+
+foreach($drawableObjects as $obj) {
+    drawObject($obj);
+}
+
+// Dynamic method calls
+echo "\n=== DYNAMIC METHOD CALLS ===\n\n";
+
+$methods = ["calculateArea", "calculatePerimeter"];
+$circle = new Circle(3);
+
+foreach($methods as $method) {
+    if (method_exists($circle, $method)) {
+        echo "$method: " . $circle->$method() . "\n";
+    }
+}
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4">
+                        <h4 class="font-semibold text-purple-800 mb-2">Types of Polymorphism:</h4>
+                        <ul class="space-y-1 text-purple-700">
+                            <li>• <strong>Compile-time (Static):</strong> Method overloading, operator overloading</li>
+                            <li>• <strong>Runtime (Dynamic):</strong> Method overriding, interface implementation</li>
+                            <li>• <strong>Parametric:</strong> Generic programming with templates</li>
+                            <li>• <strong>Inclusion:</strong> Subtyping and inheritance relationships</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section id="examples" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Practical Code Examples</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 1: University Management System</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">University OOP Design</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Base class: Person
+abstract class Person {
+    protected $id;
+    protected $name;
+    protected $email;
+    protected $phone;
+    
+    public function __construct($id, $name, $email, $phone) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->phone = $phone;
+    }
+    
+    // Abstract method - must be implemented by child classes
+    abstract public function getRole();
+    abstract public function getDetails();
+    
+    // Concrete methods
+    public function getBasicInfo() {
+        return "ID: $this->id, Name: $this->name, Email: $this->email";
+    }
+    
+    public function updateContact($email, $phone) {
+        $this->email = $email;
+        $this->phone = $phone;
+    }
+    
+    // Getters
+    public function getId() { return $this->id; }
+    public function getName() { return $this->name; }
+    public function getEmail() { return $this->email; }
+}
+
+// Student class inherits from Person
+class Student extends Person {
+    private $studentId;
+    private $major;
+    private $gpa;
+    private $enrolledCourses = [];
+    
+    public function __construct($id, $name, $email, $phone, $studentId, $major, $gpa = 0.0) {
+        parent::__construct($id, $name, $email, $phone);
+        $this->studentId = $studentId;
+        $this->major = $major;
+        $this->gpa = $gpa;
+    }
+    
+    // Implement abstract methods
+    public function getRole() {
+        return "Student";
+    }
+    
+    public function getDetails() {
+        return "Student ID: $this->studentId, Major: $this->major, GPA: $this->gpa";
+    }
+    
+    // Student-specific methods
+    public function enrollCourse($course) {
+        $this->enrolledCourses[] = $course;
+        echo "$this->name enrolled in $course\n";
+    }
+    
+    public function dropCourse($course) {
+        $key = array_search($course, $this->enrolledCourses);
+        if ($key !== false) {
+            unset($this->enrolledCourses[$key]);
+            echo "$this->name dropped $course\n";
+        }
+    }
+    
+    public function updateGPA($newGPA) {
+        if ($newGPA >= 0.0 && $newGPA <= 4.0) {
+            $this->gpa = $newGPA;
+            echo "GPA updated to $newGPA for $this->name\n";
+        }
+    }
+    
+    public function getTranscript() {
+        $transcript = "TRANSCRIPT for $this->name\n";
+        $transcript .= "Student ID: $this->studentId\n";
+        $transcript .= "Major: $this->major\n";
+        $transcript .= "GPA: $this->gpa\n";
+        $transcript .= "Enrolled Courses:\n";
+        foreach($this->enrolledCourses as $course) {
+            $transcript .= "  - $course\n";
+        }
+        return $transcript;
+    }
+}
+
+// Professor class inherits from Person
+class Professor extends Person {
+    private $employeeId;
+    private $department;
+    private $salary;
+    private $coursesTaught = [];
+    private $publications = [];
+    
+    public function __construct($id, $name, $email, $phone, $employeeId, $department, $salary) {
+        parent::__construct($id, $name, $email, $phone);
+        $this->employeeId = $employeeId;
+        $this->department = $department;
+        $this->salary = $salary;
+    }
+    
+    // Implement abstract methods
+    public function getRole() {
+        return "Professor";
+    }
+    
+    public function getDetails() {
+        return "Employee ID: $this->employeeId, Department: $this->department, Salary: $$this->salary";
+    }
+    
+    // Professor-specific methods
+    public function assignCourse($course) {
+        $this->coursesTaught[] = $course;
+        echo "Professor $this->name assigned to teach $course\n";
+    }
+    
+    public function addPublication($publication) {
+        $this->publications[] = $publication;
+        echo "Publication '$publication' added for Professor $this->name\n";
+    }
+    
+    public function getResearchProfile() {
+        $profile = "RESEARCH PROFILE\n";
+        $profile .= "Professor: $this->name\n";
+        $profile .= "Department: $this->department\n";
+        $profile .= "Publications:\n";
+        foreach($this->publications as $pub) {
+            $profile .= "  - $pub\n";
+        }
+        return $profile;
+    }
+    
+    public function conductResearch($topic) {
+        echo "Professor $this->name is conducting research on: $topic\n";
+    }
+}
+
+// Teaching Assistant class (multiple inheritance levels)
+class TeachingAssistant extends Student {
+    private $professorAssigned;
+    private $hoursPerWeek;
+    private $stipend;
+    
+    public function __construct($id, $name, $email, $phone, $studentId, $major, $gpa, $professor, $hours, $stipend) {
+        parent::__construct($id, $name, $email, $phone, $studentId, $major, $gpa);
+        $this->professorAssigned = $professor;
+        $this->hoursPerWeek = $hours;
+        $this->stipend = $stipend;
+    }
+    
+    // Override parent method
+    public function getRole() {
+        return "Teaching Assistant";
+    }
+    
+    // Override parent method
+    public function getDetails() {
+        $studentDetails = parent::getDetails();
+        return "$studentDetails, Assigned to: $this->professorAssigned, Hours: $this->hoursPerWeek/week";
+    }
+    
+    // TA-specific methods
+    public function assistInLab($course) {
+        echo "TA $this->name assisting in $course lab\n";
+    }
+    
+    public function gradeAssignments($course) {
+        echo "TA $this->name grading assignments for $course\n";
+    }
+    
+    public function holdOfficeHours() {
+        echo "TA $this->name holding office hours ($this->hoursPerWeek hours/week)\n";
+    }
+}
+
+// Course class
+class Course {
+    private $courseCode;
+    private $courseName;
+    private $credits;
+    private $professor;
+    private $students = [];
+    
+    public function __construct($code, $name, $credits) {
+        $this->courseCode = $code;
+        $this->courseName = $name;
+        $this->credits = $credits;
+    }
+    
+    public function assignProfessor(Professor $professor) {
+        $this->professor = $professor;
+        echo "Professor " . $professor->getName() . " assigned to $this->courseName\n";
+    }
+    
+    public function enrollStudent(Student $student) {
+        $this->students[$student->getId()] = $student;
+        echo "Student " . $student->getName() . " enrolled in $this->courseName\n";
+    }
+    
+    public function getCourseInfo() {
+        $info = "Course: $this->courseCode - $this->courseName\n";
+        $info .= "Credits: $this->credits\n";
+        if ($this->professor) {
+            $info .= "Professor: " . $this->professor->getName() . "\n";
+        }
+        $info .= "Enrolled Students: " . count($this->students) . "\n";
+        return $info;
+    }
+    
+    public function getClassRoster() {
+        $roster = "Class Roster for $this->courseCode\n";
+        $roster .= str_repeat("=", 40) . "\n";
+        foreach($this->students as $student) {
+            $roster .= $student->getBasicInfo() . "\n";
+        }
+        return $roster;
+    }
+}
+
+// Demonstration
+echo "=== UNIVERSITY MANAGEMENT SYSTEM ===\n\n";
+
+// Create people objects
+$student1 = new Student(1, "Alice Johnson", "alice@university.edu", "555-0101", "S001", "Computer Science", 3.8);
+$student2 = new Student(2, "Bob Smith", "bob@university.edu", "555-0102", "S002", "Mathematics", 3.5);
+
+$professor1 = new Professor(3, "Dr. Sarah Wilson", "sarah@university.edu", "555-0201", "P001", "Computer Science", 85000);
+$professor2 = new Professor(4, "Dr. Michael Brown", "michael@university.edu", "555-0202", "P002", "Mathematics", 82000);
+
+$ta1 = new TeachingAssistant(5, "Charlie Davis", "charlie@university.edu", "555-0301", "S003", "Computer Science", 3.9, "Dr. Sarah Wilson", 20, 2000);
+
+// Demonstrate polymorphism
+$people = [$student1, $professor1, $ta1];
+
+echo "POLYMORPHISM DEMONSTRATION:\n";
+echo "============================\n";
+foreach($people as $person) {
+    echo $person->getBasicInfo() . "\n";
+    echo "Role: " . $person->getRole() . "\n";
+    echo "Details: " . $person->getDetails() . "\n";
+    echo "-" . str_repeat("-", 40) . "\n";
+}
+
+// Demonstrate inheritance and method overriding
+echo "\nINHERITANCE AND METHOD OVERRIDING:\n";
+echo "===================================\n";
+echo $ta1->getDetails() . "\n";
+echo $ta1->getRole() . "\n";
+
+// Course management
+$course1 = new Course("CS101", "Introduction to Programming", 3);
+$course1->assignProfessor($professor1);
+$course1->enrollStudent($student1);
+$course1->enrollStudent($student2);
+
+echo "\nCOURSE MANAGEMENT:\n";
+echo "==================\n";
+echo $course1->getCourseInfo() . "\n";
+echo $course1->getClassRoster() . "\n";
+
+// Student-specific operations
+echo "\nSTUDENT OPERATIONS:\n";
+echo "===================\n";
+$student1->enrollCourse("Data Structures");
+$student1->enrollCourse("Algorithms");
+echo $student1->getTranscript() . "\n";
+
+// Professor-specific operations
+echo "\nPROFESSOR OPERATIONS:\n";
+echo "====================\n";
+$professor1->assignCourse("CS101");
+$professor1->addPublication("Advanced OOP Techniques in PHP");
+$professor1->conductResearch("Machine Learning Applications");
+echo $professor1->getResearchProfile() . "\n";
+
+// TA-specific operations
+echo "\nTEACHING ASSISTANT OPERATIONS:\n";
+echo "===============================\n";
+$ta1->assistInLab("CS101");
+$ta1->gradeAssignments("CS101");
+$ta1->holdOfficeHours();
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 2: E-commerce System with Interfaces</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">E-commerce OOP with Interfaces</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Interface for products
+interface ProductInterface {
+    public function getPrice();
+    public function getDescription();
+    public function isAvailable();
+    public function applyDiscount($percentage);
+}
+
+// Interface for shippable items
+interface ShippableInterface {
+    public function getWeight();
+    public function getDimensions();
+    public function calculateShippingCost($distance);
+}
+
+// Interface for taxable items
+interface TaxableInterface {
+    public function calculateTax($taxRate);
+}
+
+// Abstract base class
+abstract class Product implements ProductInterface {
+    protected $sku;
+    protected $name;
+    protected $price;
+    protected $description;
+    protected $stock;
+    
+    public function __construct($sku, $name, $price, $description, $stock = 0) {
+        $this->sku = $sku;
+        $this->name = $name;
+        $this->price = $price;
+        $this->description = $description;
+        $this->stock = $stock;
+    }
+    
+    // Implement interface methods
+    public function getPrice() {
+        return $this->price;
+    }
+    
+    public function getDescription() {
+        return $this->description;
+    }
+    
+    public function isAvailable() {
+        return $this->stock > 0;
+    }
+    
+    public function applyDiscount($percentage) {
+        if ($percentage > 0 && $percentage <= 100) {
+            $this->price -= $this->price * ($percentage / 100);
+            return true;
+        }
+        return false;
+    }
+    
+    // Abstract method for product-specific features
+    abstract public function getProductType();
+    
+    // Common methods
+    public function updateStock($quantity) {
+        $this->stock += $quantity;
+    }
+    
+    public function sell($quantity = 1) {
+        if ($this->stock >= $quantity) {
+            $this->stock -= $quantity;
+            return true;
+        }
+        return false;
+    }
+    
+    public function getStock() {
+        return $this->stock;
+    }
+    
+    public function getSku() {
+        return $this->sku;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+}
+
+// Physical product class
+class PhysicalProduct extends Product implements ShippableInterface, TaxableInterface {
+    private $weight;
+    private $length;
+    private $width;
+    private $height;
+    
+    public function __construct($sku, $name, $price, $description, $stock, $weight, $length, $width, $height) {
+        parent::__construct($sku, $name, $price, $description, $stock);
+        $this->weight = $weight;
+        $this->length = $length;
+        $this->width = $width;
+        $this->height = $height;
+    }
+    
+    // Implement ShippableInterface
+    public function getWeight() {
+        return $this->weight;
+    }
+    
+    public function getDimensions() {
+        return [$this->length, $this->width, $this->height];
+    }
+    
+    public function calculateShippingCost($distance) {
+        // Simple shipping calculation based on weight and distance
+        $baseRate = 0.1; // $0.10 per mile per pound
+        return $this->weight * $distance * $baseRate;
+    }
+    
+    // Implement TaxableInterface
+    public function calculateTax($taxRate) {
+        return $this->price * ($taxRate / 100);
+    }
+    
+    // Implement abstract method
+    public function getProductType() {
+        return "Physical Product";
+    }
+    
+    // Physical product specific methods
+    public function getVolume() {
+        return $this->length * $this->width * $this->height;
+    }
+    
+    public function isFragile() {
+        return $this->weight < 5; // Simple fragile detection
+    }
+}
+
+// Digital product class
+class DigitalProduct extends Product {
+    private $fileSize;
+    private $downloadLink;
+    private $licenseType;
+    
+    public function __construct($sku, $name, $price, $description, $stock, $fileSize, $downloadLink, $licenseType) {
+        parent::__construct($sku, $name, $price, $description, $stock);
+        $this->fileSize = $fileSize;
+        $this->downloadLink = $downloadLink;
+        $this->licenseType = $licenseType;
+    }
+    
+    // Override parent method for digital products
+    public function isAvailable() {
+        // Digital products are always available if stock > 0
+        return $this->stock > 0;
+    }
+    
+    // Implement abstract method
+    public function getProductType() {
+        return "Digital Product";
+    }
+    
+    // Digital product specific methods
+    public function getDownloadLink() {
+        return $this->downloadLink;
+    }
+    
+    public function getFileSize() {
+        return $this->fileSize;
+    }
+    
+    public function generateLicenseKey() {
+        return strtoupper(bin2hex(random_bytes(16)));
+    }
+    
+    public function deliverProduct() {
+        return "Digital product delivered. Download link: $this->downloadLink";
+    }
+}
+
+// Service class
+class Service extends Product {
+    private $serviceType;
+    private $duration;
+    private $provider;
+    
+    public function __construct($sku, $name, $price, $description, $stock, $serviceType, $duration, $provider) {
+        parent::__construct($sku, $name, $price, $description, $stock);
+        $this->serviceType = $serviceType;
+        $this->duration = $duration;
+        $this->provider = $provider;
+    }
+    
+    // Implement abstract method
+    public function getProductType() {
+        return "Service";
+    }
+    
+    // Service specific methods
+    public function scheduleService($date) {
+        return "Service scheduled for $date with $this->provider";
+    }
+    
+    public function getServiceDetails() {
+        return "Service: $this->serviceType, Duration: $this->duration hours";
+    }
+}
+
+// Shopping cart class
+class ShoppingCart {
+    private $items = [];
+    private $taxRate = 8.25; // 8.25% tax
+    
+    public function addItem(ProductInterface $product, $quantity = 1) {
+        $sku = $product->getSku();
+        if (isset($this->items[$sku])) {
+            $this->items[$sku]['quantity'] += $quantity;
+        } else {
+            $this->items[$sku] = [
+                'product' => $product,
+                'quantity' => $quantity
+            ];
+        }
+        echo "Added $quantity x " . $product->getName() . " to cart\n";
+    }
+    
+    public function removeItem($sku) {
+        if (isset($this->items[$sku])) {
+            unset($this->items[$sku]);
+            echo "Removed item from cart\n";
+        }
+    }
+    
+    public function updateQuantity($sku, $quantity) {
+        if (isset($this->items[$sku])) {
+            $this->items[$sku]['quantity'] = $quantity;
+            echo "Updated quantity to $quantity\n";
+        }
+    }
+    
+    public function calculateSubtotal() {
+        $subtotal = 0;
+        foreach($this->items as $item) {
+            $subtotal += $item['product']->getPrice() * $item['quantity'];
+        }
+        return $subtotal;
+    }
+    
+    public function calculateTax() {
+        $subtotal = $this->calculateSubtotal();
+        $tax = 0;
+        foreach($this->items as $item) {
+            $product = $item['product'];
+            if ($product instanceof TaxableInterface) {
+                $tax += $product->calculateTax($this->taxRate) * $item['quantity'];
+            }
+        }
+        return $tax;
+    }
+    
+    public function calculateShipping($distance = 100) {
+        $shipping = 0;
+        foreach($this->items as $item) {
+            $product = $item['product'];
+            if ($product instanceof ShippableInterface) {
+                $shipping += $product->calculateShippingCost($distance) * $item['quantity'];
+            }
+        }
+        return $shipping;
+    }
+    
+    public function calculateTotal($distance = 100) {
+        $subtotal = $this->calculateSubtotal();
+        $tax = $this->calculateTax();
+        $shipping = $this->calculateShipping($distance);
+        return $subtotal + $tax + $shipping;
+    }
+    
+    public function displayCart() {
+        echo "SHOPPING CART\n";
+        echo "=============\n\n";
+        
+        if (empty($this->items)) {
+            echo "Cart is empty\n";
+            return;
+        }
+        
+        foreach($this->items as $sku => $item) {
+            $product = $item['product'];
+            $quantity = $item['quantity'];
+            $price = $product->getPrice();
+            $total = $price * $quantity;
+            
+            echo sprintf("%-20s x%-3d $%8.2f $%8.2f\n", 
+                $product->getName(), $quantity, $price, $total);
+        }
+        
+        echo "\nSubtotal: $" . number_format($this->calculateSubtotal(), 2) . "\n";
+        echo "Tax: $" . number_format($this->calculateTax(), 2) . "\n";
+        echo "Shipping: $" . number_format($this->calculateShipping(), 2) . "\n";
+        echo "TOTAL: $" . number_format($this->calculateTotal(), 2) . "\n";
+    }
+}
+
+// Demonstration
+echo "=== E-COMMERCE SYSTEM DEMONSTRATION ===\n\n";
+
+// Create products
+$laptop = new PhysicalProduct("LAP001", "Gaming Laptop", 1299.99, "High-performance gaming laptop", 10, 5.5, 15, 10, 2);
+$ebook = new DigitalProduct("EBK001", "PHP Programming Guide", 49.99, "Complete PHP programming ebook", 100, 15.5, "https://download.example.com/php-guide", "Single User");
+$consultation = new Service("SVC001", "Tech Consultation", 150.00, "1-hour technical consultation", 20, "Consultation", 1, "John Expert");
+
+// Create shopping cart
+$cart = new ShoppingCart();
+
+// Add items to cart
+echo "Adding items to cart:\n";
+echo "======================\n";
+$cart->addItem($laptop, 1);
+$cart->addItem($ebook, 2);
+$cart->addItem($consultation, 1);
+
+echo "\n";
+
+// Display cart
+echo "Cart Contents:\n";
+echo "==============\n";
+$cart->displayCart();
+
+// Apply discount
+echo "\nApplying 10% discount to laptop:\n";
+echo "=================================\n";
+$laptop->applyDiscount(10);
+echo "New laptop price: $" . $laptop->getPrice() . "\n\n";
+
+// Display updated cart
+$cart->displayCart();
+
+// Demonstrate polymorphism
+echo "\n=== POLYMORPHISM DEMONSTRATION ===\n\n";
+
+$products = [$laptop, $ebook, $consultation];
+
+echo "Product Information:\n";
+echo "====================\n";
+foreach($products as $product) {
+    echo $product->getName() . " - " . $product->getProductType() . "\n";
+    echo "Price: $" . $product->getPrice() . "\n";
+    echo "Available: " . ($product->isAvailable() ? "Yes" : "No") . "\n";
+    
+    // Type-specific operations
+    if ($product instanceof PhysicalProduct) {
+        echo "Weight: " . $product->getWeight() . " lbs\n";
+        echo "Shipping cost (100 miles): $" . number_format($product->calculateShippingCost(100), 2) . "\n";
+    }
+    
+    if ($product instanceof DigitalProduct) {
+        echo "File size: " . $product->getFileSize() . " MB\n";
+        echo "License: $product->licenseType\n";
+    }
+    
+    if ($product instanceof TaxableInterface) {
+        echo "Tax (8.25%): $" . number_format($product->calculateTax(8.25), 2) . "\n";
+    }
+    
+    echo "-" . str_repeat("-", 30) . "\n";
+}
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- External Resources -->
+                <section class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">External Resources</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.php.net/manual/en/language.oop5.php" target="_blank" class="text-orange-600 hover:text-orange-800">
+                                    PHP OOP Documentation
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Official PHP documentation for object-oriented programming features.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-php/" target="_blank" class="text-orange-600 hover:text-orange-800">
+                                    PHP OOP Concepts Guide
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Comprehensive guide to OOP concepts with PHP examples and best practices.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.w3schools.com/php/php_oop.asp" target="_blank" class="text-orange-600 hover:text-orange-800">
+                                    W3Schools PHP OOP Tutorial
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Interactive PHP OOP tutorial with practical examples and exercises.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://github.com/php/php-src" target="_blank" class="text-orange-600 hover:text-orange-800">
+                                    PHP Core OOP Implementation
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Explore how OOP features are implemented in PHP's core source code.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Chapter Quiz -->
+                <section id="quiz" class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Chapter Quiz</h2>
+                    <p class="text-gray-600 mb-6">Test your understanding of PHP Object-Oriented Programming with this interactive quiz.</p>
+                    
+                    <div class="text-center">
+                        <button onclick="startQuiz('chapter4')" class="bg-orange-600 text-white px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors text-lg font-semibold">
+                            Start Chapter 4 Quiz
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">3 questions • Multiple choice & true/false</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+        
+        // Bookmark functionality
+        function toggleBookmark(chapter) {
+            const button = event.currentTarget;
+            button.classList.toggle('bookmarked');
+            
+            // Save to localStorage
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (button.classList.contains('bookmarked')) {
+                if (!bookmarks.includes(chapter)) {
+                    bookmarks.push(chapter);
+                }
+            } else {
+                const index = bookmarks.indexOf(chapter);
+                if (index > -1) {
+                    bookmarks.splice(index, 1);
+                }
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+        
+        // Load bookmark status
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (bookmarks.includes('chapter4')) {
+                document.querySelector('.bookmark-btn').classList.add('bookmarked');
+            }
+        });
+    </script>
+</body>
+</html>

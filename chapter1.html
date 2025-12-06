@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Introduction to PHP - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .code-block { background: #2d3748; border-radius: 8px; overflow: hidden; }
+        .code-header { background: #4a5568; padding: 12px 16px; font-size: 14px; color: #e2e8f0; }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: #718096; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .copy-btn:hover { background: #a0aec0; }
+        .concept-card { transition: all 0.3s ease; }
+        .concept-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .diff-table { border-collapse: collapse; width: 100%; }
+        .diff-table th, .diff-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        .diff-table th { background: #f7fafc; font-weight: 600; }
+        .bookmark-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); border: none; padding: 8px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .bookmark-btn:hover { background: white; transform: scale(1.1); }
+        .bookmark-btn.bookmarked { background: #fbbf24; color: white; }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-blue-600 font-medium">Chapter 1</a>
+                    <a href="chapter2.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 2</a>
+                    <a href="chapter3.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 3</a>
+                    <a href="chapter4.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 4</a>
+                    <a href="chapter5.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 5</a>
+                    <a href="papers.html" class="text-gray-600 hover:text-blue-600 transition-colors">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chapter Header -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white">
+                <nav class="text-blue-200 mb-4">
+                    <a href="index.html" class="hover:text-white">Home</a> / 
+                    <span>Chapter 1</span>
+                </nav>
+                <h1 class="text-4xl font-display font-bold mb-4">Introduction to PHP</h1>
+                <p class="text-xl text-blue-100 max-w-3xl">
+                    Learn the fundamentals of PHP programming language, its evolution, features, and basic syntax.
+                </p>
+                <button class="bookmark-btn" onclick="toggleBookmark('chapter1')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-24">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Table of Contents</h3>
+                    <nav class="space-y-2">
+                        <a href="#evolution" class="block text-blue-600 hover:text-blue-800 py-1">Evolution of PHP</a>
+                        <a href="#features" class="block text-gray-600 hover:text-blue-600 py-1">Features of PHP</a>
+                        <a href="#advantages" class="block text-gray-600 hover:text-blue-600 py-1">Advantages</a>
+                        <a href="#structure" class="block text-gray-600 hover:text-blue-600 py-1">File Structure</a>
+                        <a href="#comments" class="block text-gray-600 hover:text-blue-600 py-1">Comments</a>
+                        <a href="#echo-print" class="block text-gray-600 hover:text-blue-600 py-1">Echo vs Print</a>
+                        <a href="#variables" class="block text-gray-600 hover:text-blue-600 py-1">Variables</a>
+                        <a href="#quiz" class="block text-gray-600 hover:text-blue-600 py-1">Chapter Quiz</a>
+                    </nav>
+                    
+                    <div class="mt-6 pt-6 border-t">
+                        <button onclick="startQuiz('chapter1')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Evolution of PHP -->
+                <section id="evolution" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Evolution of PHP</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 mb-4">
+                            PHP began as the Personal Home Page and has evolved into one of the most popular server-side scripting languages on the web.
+                        </p>
+                        
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                            <h4 class="font-semibold text-blue-800 mb-2">Key Milestones:</h4>
+                            <ul class="space-y-2 text-blue-700">
+                                <li><strong>1994:</strong> Developed by Rasmus Lerdorf as Personal Home Page</li>
+                                <li><strong>1997:</strong> PHP 2 released (PHP now stands for Hypertext Preprocessor)</li>
+                                <li><strong>1998:</strong> PHP 3 released with improved functionality</li>
+                                <li><strong>2000:</strong> PHP 4 released with Zend Engine</li>
+                                <li><strong>2004:</strong> PHP 5.0.0 released with major OOP improvements</li>
+                                <li><strong>2015:</strong> PHP 7 released with significant performance improvements</li>
+                                <li><strong>2020:</strong> PHP 8 released with JIT compilation and new features</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="text-gray-700">
+                            Today, PHP powers over 70% of websites on the internet, including major platforms like WordPress, Facebook, and Wikipedia.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Features of PHP -->
+                <section id="features" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Features of PHP</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Server-Side Scripting</h4>
+                            <p class="text-gray-600">PHP scripts are executed on the server, generating dynamic HTML content sent to the client.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Open Source</h4>
+                            <p class="text-gray-600">Free to use, modify, and distribute with a large community support.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Database Integration</h4>
+                            <p class="text-gray-600">Excellent support for MySQL, PostgreSQL, Oracle, and other databases.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Cross-Platform</h4>
+                            <p class="text-gray-600">Runs on Windows, Linux, macOS, and various Unix systems.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                        <h4 class="font-semibold text-green-800 mb-2">Key Strengths:</h4>
+                        <ul class="space-y-1 text-green-700">
+                            <li>• Easy to learn with C-like syntax</li>
+                            <li>• Large collection of built-in functions</li>
+                            <li>• Excellent performance and scalability</li>
+                            <li>• Strong security features</li>
+                            <li>• Extensive documentation and community</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Advantages -->
+                <section id="advantages" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Advantages of PHP</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Platform Independence</h4>
+                                <p class="text-gray-600">Runs on various platforms and is compatible with almost all web servers.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Dynamic Content Generation</h4>
+                                <p class="text-gray-600">Can generate dynamic page content based on user input and database queries.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">File Operations</h4>
+                                <p class="text-gray-600">Can create, open, read, write, delete, and close files on the server.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Form Handling</h4>
+                                <p class="text-gray-600">Excellent support for collecting form data and processing user input.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- File Structure -->
+                <section id="structure" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">PHP File Structure</h2>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-3">Basic PHP Syntax</h4>
+                        <div class="code-block relative">
+                            <div class="code-header">PHP Syntax Example</div>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// PHP code starts with &lt;?php and ends with ?&gt;
+echo "Hello, World!";
+
+// All PHP statements end with a semicolon
+$name = "PHP";
+echo "Welcome to $name programming!";
+
+// PHP can be embedded in HTML
+?&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;&lt;?php echo "Dynamic Content"; ?&gt;&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Important Notes:</h4>
+                        <ul class="space-y-1 text-yellow-700">
+                            <li>• PHP files have a .php extension</li>
+                            <li>• PHP code is executed on the server</li>
+                            <li>• PHP is structurally similar to C/C++</li>
+                            <li>• Supports both procedural and object-oriented programming</li>
+                            <li>• All statements must end with a semicolon (;)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Comments -->
+                <section id="comments" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Comments in PHP</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Comments are lines that are not executed as part of the program. They are used to explain code and make it more readable.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">PHP Comments Example</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Single line comment using double slash
+# Single line comment using hash symbol
+
+/*
+Multi-line comment
+This can span multiple lines
+Used for detailed explanations
+*/
+
+// Comments help others understand your code
+$name = "John"; // This is an inline comment
+$age = 25; # Another inline comment
+
+/*
+Function: calculateSum
+Purpose: Adds two numbers
+Parameters: $a, $b
+Returns: Sum of $a and $b
+*/
+function calculateSum($a, $b) {
+    return $a + $b; // Return the sum
+}
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Best Practices:</h4>
+                        <ul class="space-y-1 text-blue-700">
+                            <li>• Use comments to explain complex logic</li>
+                            <li>• Comment your functions with purpose and parameters</li>
+                            <li>• Keep comments up to date with code changes</li>
+                            <li>• Use meaningful variable names to reduce comment needs</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Echo vs Print -->
+                <section id="echo-print" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Echo vs Print Statements</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Both echo and print are used to output data in PHP, but they have some key differences.
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="diff-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>echo</th>
+                                    <th>print</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Return Value</td>
+                                    <td>No return value</td>
+                                    <td>Returns 1 (can be used in expressions)</td>
+                                </tr>
+                                <tr>
+                                    <td>Parameters</td>
+                                    <td>Can take multiple parameters</td>
+                                    <td>Can take only one parameter</td>
+                                </tr>
+                                <tr>
+                                    <td>Performance</td>
+                                    <td>Marginally faster</td>
+                                    <td>Slightly slower</td>
+                                </tr>
+                                <tr>
+                                    <td>Syntax</td>
+                                    <td>echo or echo()</td>
+                                    <td>print or print()</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Echo and Print Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Echo examples
+echo "Hello, World!";
+echo "This is a string";
+echo "Multiple ", "parameters ", "with echo";
+
+// Print examples
+print "Hello, World!";
+print "This is also a string";
+
+// Using in expressions (print only)
+$result = print "This can be used in expressions";
+// $result will be 1
+
+// Parentheses can be used with both
+echo("Hello with parentheses");
+print("Hello with parentheses");
+
+// Variables with echo and print
+$name = "PHP";
+echo "Welcome to $name!";
+print "Welcome to $name!";
+?&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Variables -->
+                <section id="variables" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Variables in PHP</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Variables are used to store data values. In PHP, variables start with the $ symbol followed by the variable name.
+                    </p>
+                    
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                        <h4 class="font-semibold text-red-800 mb-2">Variable Rules:</h4>
+                        <ul class="space-y-1 text-red-700">
+                            <li>• Must start with $ symbol</li>
+                            <li>• Must start with a letter or underscore (not number)</li>
+                            <li>• Can only contain alphanumeric characters and underscores</li>
+                            <li>• Case-sensitive ($name is different from $Name)</li>
+                            <li>• Cannot use reserved keywords</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">PHP Variables Example</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Valid variable names
+$name = "John Doe";
+$age = 25;
+$city = "New York";
+$_score = 95;
+$user123 = "student123";
+
+// Invalid variable names (will cause errors)
+// $123name = "Invalid";    // Cannot start with number
+// $user-name = "Invalid";   // Cannot contain hyphen
+// $class = "Invalid";       // Case sensitive
+
+// Variable types
+$string = "Hello, World!";
+$integer = 42;
+$float = 3.14;
+$boolean = true;
+$array = array(1, 2, 3);
+
+// Output variables
+echo "Name: $name<br>";
+echo "Age: $age<br>";
+echo "City: $city<br>";
+
+// Variable interpolation
+$greeting = "Hello";
+$name = "PHP Developer";
+echo "$greeting, $name!";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Variable Scope:</h4>
+                        <ul class="space-y-1 text-yellow-700">
+                            <li>• <strong>Global variables:</strong> Can be used anywhere in the script</li>
+                            <li>• <strong>Local variables:</strong> Restricted to functions or classes</li>
+                            <li>• <strong>Static variables:</strong> Retain their value between function calls</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- External Resources -->
+                <section class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">External Resources</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.php.net/manual/en/" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                    Official PHP Documentation
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Comprehensive official documentation for PHP language features and functions.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.geeksforgeeks.org/php-tutorials/" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                    GeeksforGeeks PHP Tutorial
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Step-by-step PHP tutorials with examples and practice exercises.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.w3schools.com/php/" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                    W3Schools PHP Tutorial
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Interactive PHP tutorials with live code examples.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://github.com/php/php-src" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                    PHP Source Code
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Explore the PHP source code and contribute to the project.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Chapter Quiz -->
+                <section id="quiz" class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Chapter Quiz</h2>
+                    <p class="text-gray-600 mb-6">Test your understanding of PHP basics with this interactive quiz.</p>
+                    
+                    <div class="text-center">
+                        <button onclick="startQuiz('chapter1')" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors text-lg font-semibold">
+                            Start Chapter 1 Quiz
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">4 questions • Multiple choice & short answers</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+        
+        // Bookmark functionality
+        function toggleBookmark(chapter) {
+            const button = event.currentTarget;
+            button.classList.toggle('bookmarked');
+            
+            // Save to localStorage
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (button.classList.contains('bookmarked')) {
+                if (!bookmarks.includes(chapter)) {
+                    bookmarks.push(chapter);
+                }
+            } else {
+                const index = bookmarks.indexOf(chapter);
+                if (index > -1) {
+                    bookmarks.splice(index, 1);
+                }
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+        
+        // Load bookmark status
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (bookmarks.includes('chapter1')) {
+                document.querySelector('.bookmark-btn').classList.add('bookmarked');
+            }
+        });
+    </script>
+</body>
+</html>

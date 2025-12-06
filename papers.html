@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Papers - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .paper-card { transition: all 0.3s ease; }
+        .paper-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .exam-mode { background: linear-gradient(135deg, #1f2937 0%, #374151 100%); }
+        .timer-warning { animation: pulse 1s infinite; }
+        .answer-area { min-height: 120px; resize: vertical; }
+        .section-tab { transition: all 0.2s ease; }
+        .section-tab.active { background: #3b82f6; color: white; }
+        .paper-completed { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .paper-completed .text-gray-600 { color: rgba(255,255,255,0.9) !important; }
+        .paper-completed .text-gray-800 { color: white !important; }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 1</a>
+                    <a href="chapter2.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 2</a>
+                    <a href="chapter3.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 3</a>
+                    <a href="chapter4.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 4</a>
+                    <a href="chapter5.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 5</a>
+                    <a href="papers.html" class="text-blue-600 font-medium">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-r from-gray-800 to-gray-900 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white text-center">
+                <h1 class="text-4xl font-display font-bold mb-4">Question Papers</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Practice with 10 full-length examination papers. Each paper contains 40 marks and has a 1:30 hour time limit.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Papers Grid -->
+    <section class="py-16" id="papersGrid">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-display font-bold text-gray-800 mb-4">Available Question Papers</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Choose a paper to start your examination practice. Each paper covers different difficulty levels and topic distributions.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="papersContainer">
+                <!-- Papers will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Exam Interface -->
+    <section id="examInterface" class="py-12 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Exam Header -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-display font-bold text-gray-800" id="examTitle">PHP Question Paper 1</h2>
+                        <p class="text-gray-600">Duration: 1:30 hours • Total Marks: 40</p>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-red-600" id="examTimer">90:00</div>
+                            <div class="text-sm text-gray-600">Time Left</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="questionsAnswered">0</div>
+                            <div class="text-sm text-gray-600">Answered</div>
+                        </div>
+                        <button onclick="saveExamProgress()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors">
+                            Save Progress
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exam Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Section Navigation -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow-lg p-6 sticky top-24">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Sections</h3>
+                        <div class="space-y-2">
+                            <button onclick="switchSection('sectionA')" class="section-tab w-full text-left px-4 py-3 rounded-lg border active">
+                                Section A<br>
+                                <span class="text-sm opacity-75">Short Answers (20 marks)</span>
+                            </button>
+                            <button onclick="switchSection('sectionB')" class="section-tab w-full text-left px-4 py-3 rounded-lg border">
+                                Section B<br>
+                                <span class="text-sm opacity-75">Long Answers (20 marks)</span>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t">
+                            <button onclick="submitExam()" class="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-colors font-semibold">
+                                Submit Paper
+                            </button>
+                            <p class="text-xs text-gray-500 mt-2 text-center">Double-check before submitting</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question Paper -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-lg shadow-lg p-8" id="paperContent">
+                        <!-- Paper content will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exam Results -->
+    <section id="examResults" class="py-12 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-display font-bold text-gray-800 mb-2">Exam Completed!</h2>
+                    <p class="text-gray-600">Congratulations on completing the question paper. Here's your performance summary.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600" id="paperNumber">1</div>
+                        <div class="text-sm text-gray-600 mt-1">Paper Number</div>
+                    </div>
+                    <div class="text-center p-6 bg-green-50 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600" id="questionsAttempted">0</div>
+                        <div class="text-sm text-gray-600 mt-1">Questions Attempted</div>
+                    </div>
+                    <div class="text-center p-6 bg-purple-50 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-600" id="totalTime">90:00</div>
+                        <div class="text-sm text-gray-600 mt-1">Total Time</div>
+                    </div>
+                    <div class="text-center p-6 bg-orange-50 rounded-lg">
+                        <div class="text-2xl font-bold text-orange-600" id="completionRate">0%</div>
+                        <div class="text-sm text-gray-600 mt-1">Completion Rate</div>
+                    </div>
+                </div>
+                
+                <!-- Performance Analysis -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Performance Analysis</h3>
+                    <div id="performanceChart" style="height: 300px;"></div>
+                </div>
+                
+                <!-- Answers Review -->
+                <div id="answersReview" class="space-y-4 mb-8">
+                    <!-- Review content will be dynamically loaded -->
+                </div>
+                
+                <div class="flex justify-center space-x-4">
+                    <button onclick="downloadResults()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+                        Download Results
+                    </button>
+                    <button onclick="attemptAnotherPaper()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        Attempt Another Paper
+                    </button>
+                    <a href="index.html" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors text-center">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        let currentPaper = null;
+        let examTimer = null;
+        let examStartTime = null;
+        
+        // Load papers on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPapersGrid();
+        });
+        
+        function loadPapersGrid() {
+            const papersContainer = document.getElementById('papersContainer');
+            const userProgress = JSON.parse(localStorage.getItem('phpStudyProgress') || '{}');
+            const completedPapers = userProgress.papersCompleted || [];
+            
+            let papersHTML = '';
+            
+            for (let i = 1; i <= 10; i++) {
+                const isCompleted = completedPapers.some(paper => paper.paperId === i);
+                const completedPaper = completedPapers.find(paper => paper.paperId === i);
+                
+                papersHTML += `
+                    <div class="paper-card bg-white rounded-lg shadow-lg overflow-hidden ${isCompleted ? 'paper-completed' : ''}">
+                        <div class="h-32 ${isCompleted ? 'bg-green-500' : 'bg-gradient-to-br from-blue-500 to-purple-600'} relative">
+                            <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                            <div class="absolute top-4 right-4">
+                                ${isCompleted ? 
+                                    '<span class="bg-white text-green-600 px-3 py-1 rounded-full text-sm font-semibold">Completed</span>' :
+                                    '<span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">Paper ' + i + '</span>'
+                                }
+                            </div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <div class="text-2xl font-bold">${isCompleted ? '✓' : i}</div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold ${isCompleted ? 'text-white' : 'text-gray-800'} mb-2">
+                                PHP Question Paper ${i}
+                            </h3>
+                            <p class="${isCompleted ? 'text-green-100' : 'text-gray-600'} mb-4">
+                                Full-length examination paper with comprehensive PHP questions covering all chapters.
+                            </p>
+                            
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm ${isCompleted ? 'text-green-100' : 'text-gray-600'}">
+                                    <span>Duration:</span>
+                                    <span>1:30 hours</span>
+                                </div>
+                                <div class="flex justify-between text-sm ${isCompleted ? 'text-green-100' : 'text-gray-600'}">
+                                    <span>Total Marks:</span>
+                                    <span>40</span>
+                                </div>
+                                <div class="flex justify-between text-sm ${isCompleted ? 'text-green-100' : 'text-gray-600'}">
+                                    <span>Questions:</span>
+                                    <span>12 (8 Short + 4 Long)</span>
+                                </div>
+                                ${isCompleted ? `
+                                    <div class="flex justify-between text-sm text-white">
+                                        <span>Attempted:</span>
+                                        <span>${completedPaper.attemptedQuestions}/${completedPaper.totalQuestions}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            
+                            <button onclick="startPaper(${i})" class="w-full ${isCompleted ? 'bg-white text-green-600 hover:bg-green-50' : 'bg-blue-600 text-white hover:bg-blue-700'} py-2 px-4 rounded-lg transition-colors font-semibold">
+                                ${isCompleted ? 'View Results' : 'Start Paper'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            papersContainer.innerHTML = papersHTML;
+        }
+        
+        function startPaper(paperId) {
+            // Check if paper was already completed
+            const userProgress = JSON.parse(localStorage.getItem('phpStudyProgress') || '{}');
+            const completedPapers = userProgress.papersCompleted || [];
+            const completedPaper = completedPapers.find(paper => paper.paperId === paperId);
+            
+            if (completedPaper) {
+                showPreviousResults(completedPaper);
+                return;
+            }
+            
+            // Start new exam
+            if (window.studyPlatform && window.studyPlatform.startQuestionPaper) {
+                window.studyPlatform.startQuestionPaper(paperId);
+            }
+            
+            // Show exam interface
+            document.getElementById('papersGrid').classList.add('hidden');
+            document.getElementById('examInterface').classList.remove('hidden');
+            
+            // Load paper data
+            loadPaper(paperId);
+        }
+        
+        function loadPaper(paperId) {
+            if (!window.studyPlatform || !window.studyPlatform.questionPapers) return;
+            
+            currentPaper = window.studyPlatform.questionPapers.find(p => p.id === paperId);
+            if (!currentPaper) return;
+            
+            // Update exam title
+            document.getElementById('examTitle').textContent = currentPaper.title;
+            
+            // Initialize exam data
+            currentPaper.answers = {};
+            currentPaper.currentSection = 'sectionA';
+            currentPaper.startTime = Date.now();
+            
+            // Display first section
+            displayPaperSection('sectionA');
+            
+            // Start timer
+            startExamTimer();
+        }
+        
+        function displayPaperSection(sectionId) {
+            if (!currentPaper) return;
+            
+            const section = currentPaper.sections[sectionId];
+            const paperContent = document.getElementById('paperContent');
+            
+            // Update section tabs
+            document.querySelectorAll('.section-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchSection('${sectionId}')"]`).classList.add('active');
+            
+            // Update current section
+            currentPaper.currentSection = sectionId;
+            
+            // Generate questions HTML
+            let questionsHTML = `
+                <div class="mb-8">
+                    <h3 class="text-2xl font-display font-bold text-gray-800 mb-4">${section.title}</h3>
+                    <p class="text-gray-600 mb-6">Answer all questions. Each question carries the marks indicated in brackets.</p>
+                </div>
+                
+                <div class="space-y-8">
+            `;
+            
+            section.questions.forEach((question, index) => {
+                const answerKey = `${sectionId}_${index}`;
+                const savedAnswer = currentPaper.answers[answerKey] || '';
+                
+                questionsHTML += `
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-start space-x-4">
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                        Q${index + 1}
+                                    </span>
+                                    <div class="flex-1">
+                                        <p class="font-medium text-gray-800 mb-2">${question.question}</p>
+                                        <p class="text-sm text-gray-600">[${question.marks} marks]</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <textarea 
+                            class="answer-area w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            rows="6"
+                            placeholder="Write your answer here... Use proper PHP syntax and explanations where necessary."
+                            onchange="saveAnswer('${sectionId}', ${index}, this.value)"
+                            data-section="${sectionId}"
+                            data-question="${index}"
+                        >${savedAnswer}</textarea>
+                        
+                        <div class="mt-2 text-xs text-gray-500">
+                            <span class="float-right">Word count: <span id="wordcount_${answerKey}">0</span></span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            questionsHTML += '</div>';
+            
+            paperContent.innerHTML = questionsHTML;
+            
+            // Update word counts
+            updateWordCounts();
+        }
+        
+        function switchSection(sectionId) {
+            if (!currentPaper) return;
+            displayPaperSection(sectionId);
+        }
+        
+        function saveAnswer(sectionId, questionIndex, value) {
+            if (!currentPaper) return;
+            
+            const answerKey = `${sectionId}_${questionIndex}`;
+            currentPaper.answers[answerKey] = value;
+            
+            // Update word count
+            const wordCount = value.trim() ? value.trim().split(/\\s+/).length : 0;
+            const wordCountElement = document.getElementById(`wordcount_${answerKey}`);
+            if (wordCountElement) {
+                wordCountElement.textContent = wordCount;
+            }
+            
+            // Update answered questions count
+            updateAnsweredCount();
+        }
+        
+        function updateWordCounts() {
+            document.querySelectorAll('textarea').forEach(textarea => {
+                const answerKey = `${textarea.dataset.section}_${textarea.dataset.question}`;
+                const wordCount = textarea.value.trim() ? textarea.value.trim().split(/\\s+/).length : 0;
+                const wordCountElement = document.getElementById(`wordcount_${answerKey}`);
+                if (wordCountElement) {
+                    wordCountElement.textContent = wordCount;
+                }
+            });
+        }
+        
+        function updateAnsweredCount() {
+            if (!currentPaper || !currentPaper.answers) return;
+            
+            const answeredCount = Object.values(currentPaper.answers).filter(answer => 
+                answer && answer.trim().length > 0
+            ).length;
+            
+            document.getElementById('questionsAnswered').textContent = answeredCount;
+        }
+        
+        function startExamTimer() {
+            const duration = 90 * 60; // 90 minutes in seconds
+            let timeLeft = duration;
+            
+            examTimer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                const timerElement = document.getElementById('examTimer');
+                if (timerElement) {
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 300) { // Last 5 minutes
+                        timerElement.classList.add('text-red-800', 'timer-warning');
+                    }
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(examTimer);
+                    submitExam();
+                }
+                
+                timeLeft--;
+            }, 1000);
+        }
+        
+        function saveExamProgress() {
+            if (!currentPaper) return;
+            
+            localStorage.setItem('currentExam', JSON.stringify(currentPaper));
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50';
+            notification.textContent = 'Exam progress saved successfully!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        function submitExam() {
+            if (confirm('Are you sure you want to submit the paper? This action cannot be undone.')) {
+                clearInterval(examTimer);
+                
+                // Calculate statistics
+                const totalQuestions = Object.keys(currentPaper.answers).length;
+                const answeredQuestions = Object.values(currentPaper.answers).filter(answer => 
+                    answer && answer.trim().length > 0
+                ).length;
+                const completionRate = Math.round((answeredQuestions / totalQuestions) * 100);
+                const timeSpent = Math.round((Date.now() - currentPaper.startTime) / 1000);
+                
+                // Save to user progress
+                const userProgress = JSON.parse(localStorage.getItem('phpStudyProgress') || '{}');
+                if (!userProgress.papersCompleted) userProgress.papersCompleted = [];
+                
+                userProgress.papersCompleted.push({
+                    paperId: currentPaper.id,
+                    completedAt: new Date().toISOString(),
+                    answers: currentPaper.answers,
+                    attemptedQuestions: answeredQuestions,
+                    totalQuestions: totalQuestions,
+                    timeSpent: timeSpent
+                });
+                
+                localStorage.setItem('phpStudyProgress', JSON.stringify(userProgress));
+                
+                // Show results
+                showExamResults(answeredQuestions, totalQuestions, completionRate, timeSpent);
+            }
+        }
+        
+        function showExamResults(attempted, total, completionRate, timeSpent) {
+            // Hide exam interface, show results
+            document.getElementById('examInterface').classList.add('hidden');
+            document.getElementById('examResults').classList.remove('hidden');
+            
+            // Update results display
+            document.getElementById('paperNumber').textContent = currentPaper.id;
+            document.getElementById('questionsAttempted').textContent = attempted;
+            document.getElementById('completionRate').textContent = `${completionRate}%`;
+            
+            const minutes = Math.floor(timeSpent / 60);
+            const seconds = timeSpent % 60;
+            document.getElementById('totalTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Create performance chart
+            createExamPerformanceChart();
+            
+            // Show answers review
+            showExamAnswersReview();
+        }
+        
+        function createExamPerformanceChart() {
+            const chartDom = document.getElementById('performanceChart');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
+                series: [{
+                    name: 'Performance',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        { value: Object.keys(currentPaper.answers).length, name: 'Questions Answered', itemStyle: { color: '#10b981' } },
+                        { value: 12 - Object.keys(currentPaper.answers).length, name: 'Questions Unanswered', itemStyle: { color: '#ef4444' } }
+                    ]
+                }]
+            };
+            
+            myChart.setOption(option);
+        }
+        
+        function showExamAnswersReview() {
+            const reviewContainer = document.getElementById('answersReview');
+            
+            let reviewHTML = '<h3 class="text-lg font-semibold text-gray-800 mb-4">Your Answers</h3>';
+            
+            // Section A answers
+            reviewHTML += '<div class="mb-6"><h4 class="font-semibold text-gray-700 mb-3">Section A: Short Answers</h4>';
+            currentPaper.sections.sectionA.questions.forEach((question, index) => {
+                const answerKey = `sectionA_${index}`;
+                const answer = currentPaper.answers[answerKey] || '';
+                const wordCount = answer.trim() ? answer.trim().split(/\\s+/).length : 0;
+                
+                reviewHTML += `
+                    <div class="border rounded-lg p-4 mb-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-medium">Question ${index + 1} [${question.marks} marks]</span>
+                            <span class="text-sm text-gray-500">${wordCount} words</span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-2">${question.question}</p>
+                        ${answer ? `<div class="bg-gray-50 p-3 rounded text-sm">${answer}</div>` : '<p class="text-sm text-red-600">Not answered</p>'}
+                    </div>
+                `;
+            });
+            reviewHTML += '</div>';
+            
+            // Section B answers
+            reviewHTML += '<div><h4 class="font-semibold text-gray-700 mb-3">Section B: Long Answers</h4>';
+            currentPaper.sections.sectionB.questions.forEach((question, index) => {
+                const answerKey = `sectionB_${index}`;
+                const answer = currentPaper.answers[answerKey] || '';
+                const wordCount = answer.trim() ? answer.trim().split(/\\s+/).length : 0;
+                
+                reviewHTML += `
+                    <div class="border rounded-lg p-4 mb-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-medium">Question ${index + 1} [${question.marks} marks]</span>
+                            <span class="text-sm text-gray-500">${wordCount} words</span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-2">${question.question}</p>
+                        ${answer ? `<div class="bg-gray-50 p-3 rounded text-sm">${answer}</div>` : '<p class="text-sm text-red-600">Not answered</p>'}
+                    </div>
+                `;
+            });
+            reviewHTML += '</div>';
+            
+            reviewContainer.innerHTML = reviewHTML;
+        }
+        
+        function downloadResults() {
+            if (!currentPaper) return;
+            
+            let content = `
+PHP Question Paper ${currentPaper.id} - Results
+Generated: ${new Date().toLocaleString()}
+
+========================================
+PERFORMANCE SUMMARY
+========================================
+Paper: ${currentPaper.title}
+Total Questions: ${Object.keys(currentPaper.answers).length}
+Questions Answered: ${Object.values(currentPaper.answers).filter(a => a && a.trim().length > 0).length}
+Completion Rate: ${Math.round((Object.values(currentPaper.answers).filter(a => a && a.trim().length > 0).length / Object.keys(currentPaper.answers).length) * 100)}%
+Time Spent: ${Math.floor((Date.now() - currentPaper.startTime) / 60000)}:${Math.floor(((Date.now() - currentPaper.startTime) % 60000) / 1000).toString().padStart(2, '0')}
+
+========================================
+SECTION A: SHORT ANSWERS
+========================================
+            `;
+            
+            currentPaper.sections.sectionA.questions.forEach((question, index) => {
+                const answerKey = `sectionA_${index}`;
+                const answer = currentPaper.answers[answerKey] || '';
+                content += `
+Q${index + 1} [${question.marks} marks]: ${question.question}
+${answer ? 'Answer: ' + answer : 'Not answered'}
+
+                `;
+            });
+            
+            content += `
+========================================
+SECTION B: LONG ANSWERS
+========================================
+            `;
+            
+            currentPaper.sections.sectionB.questions.forEach((question, index) => {
+                const answerKey = `sectionB_${index}`;
+                const answer = currentPaper.answers[answerKey] || '';
+                content += `
+Q${index + 1} [${question.marks} marks]: ${question.question}
+${answer ? 'Answer: ' + answer : 'Not answered'}
+
+                `;
+            });
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `PHP_Paper_${currentPaper.id}_Results.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function attemptAnotherPaper() {
+            // Reset and show papers grid
+            document.getElementById('examResults').classList.add('hidden');
+            document.getElementById('papersGrid').classList.remove('hidden');
+            
+            // Reload papers to show updated status
+            loadPapersGrid();
+        }
+        
+        function showPreviousResults(completedPaper) {
+            // Mock showing previous results
+            alert(`You completed Paper ${completedPaper.paperId} on ${new Date(completedPaper.completedAt).toLocaleDateString()}. You answered ${completedPaper.attemptedQuestions} out of ${completedPaper.totalQuestions} questions.`);
+        }
+    </script>
+</body>
+</html>

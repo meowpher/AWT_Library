@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Files and Directories - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .code-block { background: #2d3748; border-radius: 8px; overflow: hidden; }
+        .code-header { background: #4a5568; padding: 12px 16px; font-size: 14px; color: #e2e8f0; }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: #718096; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .copy-btn:hover { background: #a0aec0; }
+        .concept-card { transition: all 0.3s ease; }
+        .concept-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .diff-table { border-collapse: collapse; width: 100%; }
+        .diff-table th, .diff-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        .diff-table th { background: #f7fafc; font-weight: 600; }
+        .bookmark-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); border: none; padding: 8px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .bookmark-btn:hover { background: white; transform: scale(1.1); }
+        .bookmark-btn.bookmarked { background: #fbbf24; color: white; }
+        .file-diagram { background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .file-icon { display: inline-block; background: #3b82f6; color: white; padding: 8px 12px; margin: 4px; border-radius: 4px; font-family: monospace; }
+        .folder-icon { display: inline-block; background: #f59e0b; color: white; padding: 8px 12px; margin: 4px; border-radius: 4px; font-family: monospace; }
+        .operation-flow { background: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; padding: 4px 8px; margin: 4px; border-radius: 50%; font-weight: bold; }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 1</a>
+                    <a href="chapter2.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 2</a>
+                    <a href="chapter3.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 3</a>
+                    <a href="chapter4.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 4</a>
+                    <a href="chapter5.html" class="text-red-600 font-medium">Chapter 5</a>
+                    <a href="papers.html" class="text-gray-600 hover:text-blue-600 transition-colors">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chapter Header -->
+    <section class="bg-gradient-to-r from-red-600 to-pink-600 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white">
+                <nav class="text-red-200 mb-4">
+                    <a href="index.html" class="hover:text-white">Home</a> / 
+                    <span>Chapter 5</span>
+                </nav>
+                <h1 class="text-4xl font-display font-bold mb-4">Files and Directories</h1>
+                <p class="text-xl text-red-100 max-w-3xl">
+                    Master file handling operations including reading, writing, uploading files, and working with directories in PHP.
+                </p>
+                <button class="bookmark-btn" onclick="toggleBookmark('chapter5')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-24">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Table of Contents</h3>
+                    <nav class="space-y-2">
+                        <a href="#introduction" class="block text-blue-600 hover:text-blue-800 py-1">File Introduction</a>
+                        <a href="#operations" class="block text-gray-600 hover:text-blue-600 py-1">File Operations</a>
+                        <a href="#modes" class="block text-gray-600 hover:text-blue-600 py-1">File Modes</a>
+                        <a href="#reading" class="block text-gray-600 hover:text-blue-600 py-1">Reading Files</a>
+                        <a href="#writing" class="block text-gray-600 hover:text-blue-600 py-1">Writing Files</a>
+                        <a href="#directories" class="block text-gray-600 hover:text-blue-600 py-1">Directories</a>
+                        <a href="#uploads" class="block text-gray-600 hover:text-blue-600 py-1">File Uploads</a>
+                        <a href="#examples" class="block text-gray-600 hover:text-blue-600 py-1">Code Examples</a>
+                        <a href="#quiz" class="block text-gray-600 hover:text-blue-600 py-1">Chapter Quiz</a>
+                    </nav>
+                    
+                    <div class="mt-6 pt-6 border-t">
+                        <button onclick="startQuiz('chapter5')" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors">
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- File Introduction -->
+                <section id="introduction" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Introduction to File Handling</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 mb-4">
+                            File handling is an important part of any web application. PHP provides powerful functions for creating, reading, writing, and manipulating files and directories on the server.
+                        </p>
+                        
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                            <h4 class="font-semibold text-red-800 mb-2">Common File Operations:</h4>
+                            <ul class="space-y-2 text-red-700">
+                                <li>• <strong>fopen():</strong> Open a file for reading, writing, or appending</li>
+                                <li>• <strong>fread():</strong> Read content from an open file</li>
+                                <li>• <strong>fwrite():</strong> Write content to an open file</li>
+                                <li>• <strong>fclose():</strong> Close an open file</li>
+                                <li>• <strong>file_get_contents():</strong> Read entire file into a string</li>
+                                <li>• <strong>file_put_contents():</strong> Write string to a file</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="file-diagram">
+                            <h4 class="font-semibold text-gray-800 mb-3">File System Structure:</h4>
+                            <div class="mb-4">
+                                <div class="folder-icon">📁 Root Directory</div>
+                                <div style="margin-left: 20px;">
+                                    <div class="folder-icon">📁 Documents</div>
+                                    <div style="margin-left: 20px;">
+                                        <div class="file-icon">📄 file1.txt</div>
+                                        <div class="file-icon">📄 file2.pdf</div>
+                                    </div>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <div class="folder-icon">📁 Images</div>
+                                    <div style="margin-left: 20px;">
+                                        <div class="file-icon">🖼️ photo1.jpg</div>
+                                        <div class="file-icon">🖼️ photo2.png</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600">Hierarchical file system with directories and files</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- File Operations -->
+                <section id="operations" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">File Operations</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides various functions for performing operations on files. Here's a comprehensive overview of the most commonly used file operations:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">File Access</h4>
+                            <ul class="space-y-1 text-blue-700 text-sm">
+                                <li>• fopen() - Open file</li>
+                                <li>• fclose() - Close file</li>
+                                <li>• feof() - Check end of file</li>
+                                <li>• fseek() - Seek to position</li>
+                                <li>• rewind() - Rewind file pointer</li>
+                                <li>• ftell() - Get file position</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-800 mb-2">File Information</h4>
+                            <ul class="space-y-1 text-green-700 text-sm">
+                                <li>• file_exists() - Check if file exists</li>
+                                <li>• filesize() - Get file size</li>
+                                <li>• is_file() - Check if regular file</li>
+                                <li>• is_dir() - Check if directory</li>
+                                <li>• is_readable() - Check readability</li>
+                                <li>• is_writable() - Check writability</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800 mb-2">File Manipulation</h4>
+                            <ul class="space-y-1 text-purple-700 text-sm">
+                                <li>• copy() - Copy file</li>
+                                <li>• rename() - Rename file</li>
+                                <li>• unlink() - Delete file</li>
+                                <li>• mkdir() - Create directory</li>
+                                <li>• rmdir() - Remove directory</li>
+                                <li>• scandir() - List directory contents</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-orange-800 mb-2">Path Functions</h4>
+                            <ul class="space-y-1 text-orange-700 text-sm">
+                                <li>• basename() - Get filename</li>
+                                <li>• dirname() - Get directory path</li>
+                                <li>• pathinfo() - Get path information</li>
+                                <li>• realpath() - Get absolute path</li>
+                                <li>• glob() - Find pathnames matching pattern</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="operation-flow">
+                        <h4 class="font-semibold text-gray-800 mb-3">File Operation Flow:</h4>
+                        <div class="space-y-2">
+                            <div><span class="step-number">1</span> Check if file exists (file_exists())</div>
+                            <div><span class="step-number">2</span> Open file with appropriate mode (fopen())</div>
+                            <div><span class="step-number">3</span> Perform read/write operations</div>
+                            <div><span class="step-number">4</span> Check for errors (if any)</div>
+                            <div><span class="step-number">5</span> Close file (fclose())</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- File Modes -->
+                <section id="modes" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">File Opening Modes</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        The fopen() function requires a mode parameter that specifies how the file should be opened. Each mode has different characteristics and use cases.
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="diff-table">
+                            <thead>
+                                <tr>
+                                    <th>Mode</th>
+                                    <th>Description</th>
+                                    <th>File Pointer Position</th>
+                                    <th>Creates File?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>'r'</td>
+                                    <td>Read only</td>
+                                    <td>Beginning of file</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>'r+'</td>
+                                    <td>Read and write</td>
+                                    <td>Beginning of file</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>'w'</td>
+                                    <td>Write only</td>
+                                    <td>Beginning of file</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>'w+'</td>
+                                    <td>Read and write</td>
+                                    <td>Beginning of file</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>'a'</td>
+                                    <td>Append only</td>
+                                    <td>End of file</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>'a+'</td>
+                                    <td>Read and append</td>
+                                    <td>End of file</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>'x'</td>
+                                    <td>Create and write only</td>
+                                    <td>Beginning of file</td>
+                                    <td>Yes (fails if exists)</td>
+                                </tr>
+                                <tr>
+                                    <td>'x+'</td>
+                                    <td>Create and read/write</td>
+                                    <td>Beginning of file</td>
+                                    <td>Yes (fails if exists)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Important Notes:</h4>
+                        <ul class="space-y-1 text-yellow-700">
+                            <li>• 'w' and 'w+' modes truncate the file to zero length if it exists</li>
+                            <li>• 'a' and 'a+' modes preserve existing content and append to the end</li>
+                            <li>• 'x' and 'x+' modes fail if the file already exists</li>
+                            <li>• Add 'b' for binary mode (e.g., 'rb', 'wb+') on Windows systems</li>
+                            <li>• Add 't' for text mode on Windows systems</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Reading Files -->
+                <section id="reading" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Reading Files</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides several methods to read content from files. The choice of method depends on the file size and the specific requirements of your application.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">File Reading Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Method 1: Reading entire file at once
+function readFileAll($filename) {
+    if (file_exists($filename)) {
+        $content = file_get_contents($filename);
+        return $content;
+    } else {
+        return "File does not exist";
+    }
+}
+
+// Method 2: Reading file line by line
+function readFileLineByLine($filename) {
+    $lines = [];
+    if (file_exists($filename)) {
+        $file = fopen($filename, "r");
+        if ($file) {
+            while (!feof($file)) {
+                $line = fgets($file);
+                if ($line !== false) {
+                    $lines[] = trim($line);
+                }
+            }
+            fclose($file);
+        }
+    }
+    return $lines;
+}
+
+// Method 3: Reading file character by character
+function readFileCharByChar($filename) {
+    $content = "";
+    if (file_exists($filename)) {
+        $file = fopen($filename, "r");
+        if ($file) {
+            while (!feof($file)) {
+                $char = fgetc($file);
+                if ($char !== false) {
+                    $content .= $char;
+                }
+            }
+            fclose($file);
+        }
+    }
+    return $content;
+}
+
+// Method 4: Reading specific number of bytes
+function readFileChunk($filename, $chunkSize = 1024) {
+    $content = "";
+    if (file_exists($filename)) {
+        $file = fopen($filename, "r");
+        if ($file) {
+            while (!feof($file)) {
+                $chunk = fread($file, $chunkSize);
+                if ($chunk !== false) {
+                    $content .= $chunk;
+                }
+            }
+            fclose($file);
+        }
+    }
+    return $content;
+}
+
+// Method 5: Reading CSV file
+function readCSVFile($filename) {
+    $data = [];
+    if (file_exists($filename)) {
+        $file = fopen($filename, "r");
+        if ($file) {
+            while (($row = fgetcsv($file)) !== false) {
+                $data[] = $row;
+            }
+            fclose($file);
+        }
+    }
+    return $data;
+}
+
+// Method 6: Reading JSON file
+function readJSONFile($filename) {
+    if (file_exists($filename)) {
+        $content = file_get_contents($filename);
+        return json_decode($content, true);
+    }
+    return null;
+}
+
+// Method 7: Reading file with error handling
+function readFileWithErrorHandling($filename) {
+    try {
+        if (!file_exists($filename)) {
+            throw new Exception("File not found: $filename");
+        }
+        
+        if (!is_readable($filename)) {
+            throw new Exception("File is not readable: $filename");
+        }
+        
+        $content = file_get_contents($filename);
+        
+        if ($content === false) {
+            throw new Exception("Failed to read file: $filename");
+        }
+        
+        return $content;
+        
+    } catch (Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+}
+
+// Method 8: Reading large files efficiently
+function readLargeFile($filename, $callback, $chunkSize = 8192) {
+    if (file_exists($filename)) {
+        $file = fopen($filename, "r");
+        if ($file) {
+            while (!feof($file)) {
+                $chunk = fread($file, $chunkSize);
+                if ($chunk !== false) {
+                    call_user_func($callback, $chunk);
+                }
+            }
+            fclose($file);
+        }
+    }
+}
+
+// Demonstration
+echo "=== FILE READING EXAMPLES ===\n\n";
+
+// Create a sample file for demonstration
+$sampleFile = "sample.txt";
+$sampleContent = "This is line 1\nThis is line 2\nThis is line 3\nThis is line 4\nThis is line 5";
+file_put_contents($sampleFile, $sampleContent);
+
+// Method 1: Read entire file
+echo "Method 1 - Read entire file:\n";
+echo readFileAll($sampleFile) . "\n\n";
+
+// Method 2: Read line by line
+echo "Method 2 - Read line by line:\n";
+$lines = readFileLineByLine($sampleFile);
+foreach($lines as $index => $line) {
+    echo "Line " . ($index + 1) . ": $line\n";
+}
+echo "\n";
+
+// Method 3: Create CSV file and read it
+$csvFile = "data.csv";
+$csvData = [
+    ["Name", "Age", "City"],
+    ["John", "25", "New York"],
+    ["Jane", "30", "Los Angeles"],
+    ["Bob", "35", "Chicago"]
+];
+
+$file = fopen($csvFile, "w");
+foreach($csvData as $row) {
+    fputcsv($file, $row);
+}
+fclose($file);
+
+echo "Method 5 - Read CSV file:\n";
+$csvContent = readCSVFile($csvFile);
+foreach($csvContent as $row) {
+    echo implode(", ", $row) . "\n";
+}
+echo "\n";
+
+// Method 6: Create JSON file and read it
+$jsonFile = "config.json";
+$jsonData = [
+    "database" => [
+        "host" => "localhost",
+        "username" => "root",
+        "password" => "password",
+        "dbname" => "myapp"
+    ],
+    "app" => [
+        "name" => "My Application",
+        "version" => "1.0.0",
+        "debug" => true
+    ]
+];
+file_put_contents($jsonFile, json_encode($jsonData, JSON_PRETTY_PRINT));
+
+echo "Method 6 - Read JSON file:\n";
+$jsonContent = readJSONFile($jsonFile);
+echo "Database Host: " . $jsonContent["database"]["host"] . "\n";
+echo "App Name: " . $jsonContent["app"]["name"] . "\n\n";
+
+// Method 8: Process large file with callback
+$largeFile = "largefile.txt";
+$largeContent = str_repeat("This is a line of text. ", 1000);
+file_put_contents($largeFile, $largeContent);
+
+echo "Method 8 - Process large file with callback:\n";
+echo "Word count: ";
+$wordCount = 0;
+readLargeFile($largeFile, function($chunk) use (&$wordCount) {
+    $wordCount += str_word_count($chunk);
+});
+echo $wordCount . " words\n\n";
+
+// Clean up files
+unlink($sampleFile);
+unlink($csvFile);
+unlink($jsonFile);
+unlink($largeFile);
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                        <h4 class="font-semibold text-green-800 mb-2">Best Practices for File Reading:</h4>
+                        <ul class="space-y-1 text-green-700">
+                            <li>• Always check if file exists before reading</li>
+                            <li>• Use file_get_contents() for small files</li>
+                            <li>• Use fopen()/fread() for large files to avoid memory issues</li>
+                            <li>• Always close files after use with fclose()</li>
+                            <li>• Handle errors gracefully with try-catch blocks</li>
+                            <li>• Use appropriate methods for specific file types (CSV, JSON)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Writing Files -->
+                <section id="writing" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Writing Files</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides several methods to write content to files. The choice of method depends on whether you want to overwrite, append, or create new files.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">File Writing Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Method 1: Writing entire file at once
+function writeFileAll($filename, $content, $append = false) {
+    $flags = $append ? FILE_APPEND : 0;
+    return file_put_contents($filename, $content, $flags);
+}
+
+// Method 2: Writing line by line
+function writeFileLineByLine($filename, $lines, $mode = "w") {
+    $file = fopen($filename, $mode);
+    if ($file) {
+        foreach($lines as $line) {
+            fwrite($file, $line . PHP_EOL);
+        }
+        fclose($file);
+        return true;
+    }
+    return false;
+}
+
+// Method 3: Writing with different modes
+function writeWithModes($filename) {
+    // Write mode (truncates existing file)
+    $file1 = fopen($filename . "_write.txt", "w");
+    fwrite($file1, "This overwrites any existing content\n");
+    fwrite($file1, "Second line of content\n");
+    fclose($file1);
+    
+    // Append mode (preserves existing content)
+    $file2 = fopen($filename . "_append.txt", "a");
+    fwrite($file2, "This gets appended to existing content\n");
+    fwrite($file2, "Another appended line\n");
+    fclose($file2);
+    
+    // Create mode (fails if file exists)
+    $newFilename = $filename . "_create.txt";
+    if (!file_exists($newFilename)) {
+        $file3 = fopen($newFilename, "x");
+        if ($file3) {
+            fwrite($file3, "This creates a new file\n");
+            fwrite($file3, "Only works if file doesn't exist\n");
+            fclose($file3);
+        }
+    }
+}
+
+// Method 4: Writing CSV file
+function writeCSVFile($filename, $data) {
+    $file = fopen($filename, "w");
+    if ($file) {
+        foreach($data as $row) {
+            fputcsv($file, $row);
+        }
+        fclose($file);
+        return true;
+    }
+    return false;
+}
+
+// Method 5: Writing JSON file
+function writeJSONFile($filename, $data) {
+    $jsonContent = json_encode($data, JSON_PRETTY_PRINT);
+    return file_put_contents($filename, $jsonContent);
+}
+
+// Method 6: Writing log files
+function writeLog($message, $logFile = "app.log") {
+    $timestamp = date("Y-m-d H:i:s");
+    $logEntry = "[$timestamp] $message" . PHP_EOL;
+    return file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
+}
+
+// Method 7: Writing binary files
+function writeBinaryFile($filename, $binaryData) {
+    $file = fopen($filename, "wb");
+    if ($file) {
+        fwrite($file, $binaryData);
+        fclose($file);
+        return true;
+    }
+    return false;
+}
+
+// Method 8: Writing with file locking
+function writeWithLock($filename, $content) {
+    $file = fopen($filename, "c");
+    if ($file) {
+        if (flock($file, LOCK_EX)) { // Exclusive lock
+            ftruncate($file, 0); // Clear file
+            rewind($file); // Rewind to beginning
+            fwrite($file, $content);
+            fflush($file); // Flush output
+            flock($file, LOCK_UN); // Release lock
+        }
+        fclose($file);
+        return true;
+    }
+    return false;
+}
+
+// Method 9: Writing configuration files
+function writeConfigFile($filename, $config) {
+    $content = "<?php\n";
+    $content .= "// Configuration file generated on " . date("Y-m-d H:i:s") . "\n";
+    $content .= "return [\n";
+    
+    foreach($config as $key => $value) {
+        if (is_string($value)) {
+            $content .= "    '$key' => '$value',\n";
+        } elseif (is_numeric($value)) {
+            $content .= "    '$key' => $value,\n";
+        } elseif (is_bool($value)) {
+            $content .= "    '$key' => " . ($value ? "true" : "false") . ",\n";
+        }
+    }
+    
+    $content .= "];\n";
+    
+    return file_put_contents($filename, $content);
+}
+
+// Method 10: Writing with progress tracking
+function writeLargeFile($filename, $content, $chunkSize = 8192) {
+    $file = fopen($filename, "w");
+    if ($file) {
+        $totalSize = strlen($content);
+        $written = 0;
+        
+        for ($i = 0; $i < $totalSize; $i += $chunkSize) {
+            $chunk = substr($content, $i, $chunkSize);
+            $bytesWritten = fwrite($file, $chunk);
+            
+            if ($bytesWritten === false) {
+                fclose($file);
+                return false;
+            }
+            
+            $written += $bytesWritten;
+            $progress = ($written / $totalSize) * 100;
+            echo sprintf("Progress: %.2f%%\r", $progress);
+        }
+        
+        fclose($file);
+        echo "\nWrite completed successfully!\n";
+        return true;
+    }
+    return false;
+}
+
+// Demonstration
+echo "=== FILE WRITING EXAMPLES ===\n\n";
+
+// Method 1: Write entire file
+echo "Method 1 - Write entire file:\n";
+$result = writeFileAll("test1.txt", "This is a test file\nWith multiple lines\nOf content.\n");
+echo "File written: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Method 2: Write line by line
+echo "Method 2 - Write line by line:\n";
+$lines = [
+    "First line of text",
+    "Second line of text",
+    "Third line of text",
+    "Fourth line of text"
+];
+$result = writeFileLineByLine("test2.txt", $lines);
+echo "File written: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Method 3: Write with different modes
+echo "Method 3 - Write with different modes:\n";
+writeWithModes("test3");
+echo "Files created with different modes\n\n";
+
+// Method 4: Write CSV file
+echo "Method 4 - Write CSV file:\n";
+$csvData = [
+    ["Product", "Price", "Stock"],
+    ["Laptop", "999.99", "10"],
+    ["Mouse", "29.99", "50"],
+    ["Keyboard", "79.99", "30"]
+];
+$result = writeCSVFile("products.csv", $csvData);
+echo "CSV file written: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Method 5: Write JSON file
+echo "Method 5 - Write JSON file:\n";
+$config = [
+    "app_name" => "My PHP App",
+    "version" => "1.0.0",
+    "debug_mode" => true,
+    "max_upload_size" => 10485760,
+    "allowed_extensions" => ["jpg", "png", "pdf", "txt"]
+];
+$result = writeJSONFile("config.json", $config);
+echo "JSON file written: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Method 6: Write log files
+echo "Method 6 - Write log entries:\n";
+writeLog("Application started");
+writeLog("User logged in: admin");
+writeLog("Database connection established");
+writeLog("User performed action: update_profile");
+echo "Log entries written\n\n";
+
+// Method 7: Write configuration file
+echo "Method 9 - Write configuration file:\n";
+$dbConfig = [
+    "host" => "localhost",
+    "username" => "root",
+    "password" => "secret123",
+    "database" => "myapp_db",
+    "charset" => "utf8mb4"
+];
+$result = writeConfigFile("database.php", $dbConfig);
+echo "Config file written: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Method 8: Write with file locking
+echo "Method 8 - Write with file locking:\n";
+$lockContent = "This content is written with file locking\nTo prevent concurrent access issues\n";
+$result = writeWithLock("locked_file.txt", $lockContent);
+echo "Locked file written: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Display file contents
+echo "=== FILE CONTENTS VERIFICATION ===\n\n";
+
+$filesToCheck = ["test1.txt", "test2.txt", "config.json"];
+foreach($filesToCheck as $file) {
+    if (file_exists($file)) {
+        echo "Contents of $file:\n";
+        echo str_repeat("-", 30) . "\n";
+        echo file_get_contents($file) . "\n\n";
+    }
+}
+
+// Clean up files
+$filesToClean = [
+    "test1.txt", "test2.txt", "test3_write.txt", "test3_append.txt", 
+    "test3_create.txt", "products.csv", "config.json", "app.log", 
+    "database.php", "locked_file.txt"
+];
+
+foreach($filesToClean as $file) {
+    if (file_exists($file)) {
+        unlink($file);
+    }
+}
+
+echo "=== CLEANUP COMPLETED ===\n";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Best Practices for File Writing:</h4>
+                        <ul class="space-y-1 text-blue-700">
+                            <li>• Choose appropriate file mode for your use case</li>
+                            <li>• Use file locking for concurrent access</li>
+                            <li>• Validate data before writing to files</li>
+                            <li>• Handle errors gracefully</li>
+                            <li>• Use appropriate methods for specific formats (CSV, JSON)</li>
+                            <li>• Always close files after writing</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Directories -->
+                <section id="directories" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Working with Directories</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides functions for creating, reading, and manipulating directories. Directory operations are essential for organizing files and managing file structures.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Directory Operations Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Function to create directory structure
+function createDirectoryStructure($basePath, $structure) {
+    foreach($structure as $dir => $subdirs) {
+        $path = $basePath . DIRECTORY_SEPARATOR . $dir;
+        
+        if (!is_dir($path)) {
+            if (mkdir($path, 0755, true)) {
+                echo "Created directory: $path\n";
+            } else {
+                echo "Failed to create directory: $path\n";
+            }
+        }
+        
+        if (is_array($subdirs) && !empty($subdirs)) {
+            createDirectoryStructure($path, $subdirs);
+        }
+    }
+}
+
+// Function to list directory contents
+function listDirectoryContents($path, $recursive = false) {
+    $contents = [
+        'files' => [],
+        'directories' => []
+    ];
+    
+    if (is_dir($path)) {
+        $items = scandir($path);
+        
+        foreach($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            
+            $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+            
+            if (is_file($fullPath)) {
+                $contents['files'][] = [
+                    'name' => $item,
+                    'path' => $fullPath,
+                    'size' => filesize($fullPath),
+                    'modified' => date("Y-m-d H:i:s", filemtime($fullPath))
+                ];
+            } elseif (is_dir($fullPath)) {
+                $contents['directories'][] = [
+                    'name' => $item,
+                    'path' => $fullPath
+                ];
+                
+                if ($recursive) {
+                    $subContents = listDirectoryContents($fullPath, true);
+                    $contents['files'] = array_merge($contents['files'], $subContents['files']);
+                    $contents['directories'] = array_merge($contents['directories'], $subContents['directories']);
+                }
+            }
+        }
+    }
+    
+    return $contents;
+}
+
+// Function to calculate directory size
+function getDirectorySize($path) {
+    $totalSize = 0;
+    
+    if (is_dir($path)) {
+        $items = scandir($path);
+        
+        foreach($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            
+            $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+            
+            if (is_file($fullPath)) {
+                $totalSize += filesize($fullPath);
+            } elseif (is_dir($fullPath)) {
+                $totalSize += getDirectorySize($fullPath);
+            }
+        }
+    }
+    
+    return $totalSize;
+}
+
+// Function to copy directory recursively
+function copyDirectory($source, $destination) {
+    if (!is_dir($source)) {
+        return false;
+    }
+    
+    if (!is_dir($destination)) {
+        mkdir($destination, 0755, true);
+    }
+    
+    $items = scandir($source);
+    
+    foreach($items as $item) {
+        if ($item === '.' || $item === '..') {
+            continue;
+        }
+        
+        $sourcePath = $source . DIRECTORY_SEPARATOR . $item;
+        $destPath = $destination . DIRECTORY_SEPARATOR . $item;
+        
+        if (is_file($sourcePath)) {
+            copy($sourcePath, $destPath);
+        } elseif (is_dir($sourcePath)) {
+            copyDirectory($sourcePath, $destPath);
+        }
+    }
+    
+    return true;
+}
+
+// Function to delete directory recursively
+function deleteDirectory($path) {
+    if (!is_dir($path)) {
+        return false;
+    }
+    
+    $items = scandir($path);
+    
+    foreach($items as $item) {
+        if ($item === '.' || $item === '..') {
+            continue;
+        }
+        
+        $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+        
+        if (is_file($fullPath)) {
+            unlink($fullPath);
+        } elseif (is_dir($fullPath)) {
+            deleteDirectory($fullPath);
+        }
+    }
+    
+    return rmdir($path);
+}
+
+// Function to find files by pattern
+function findFiles($pattern, $path = '.') {
+    $matches = [];
+    $files = glob($path . DIRECTORY_SEPARATOR . $pattern);
+    
+    foreach($files as $file) {
+        if (is_file($file)) {
+            $matches[] = $file;
+        }
+    }
+    
+    // Search in subdirectories
+    $dirs = glob($path . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+    foreach($dirs as $dir) {
+        if ($dir !== '.' && $dir !== '..') {
+            $subMatches = findFiles($pattern, $dir);
+            $matches = array_merge($matches, $subMatches);
+        }
+    }
+    
+    return $matches;
+}
+
+// Function to create file index
+function createFileIndex($path, $indexFile = "file_index.txt") {
+    $contents = listDirectoryContents($path, true);
+    $indexContent = "FILE INDEX\n";
+    $indexContent .= "Generated: " . date("Y-m-d H:i:s") . "\n";
+    $indexContent .= "Path: $path\n";
+    $indexContent .= str_repeat("=", 50) . "\n\n";
+    
+    // Add directories
+    if (!empty($contents['directories'])) {
+        $indexContent .= "DIRECTORIES:\n";
+        foreach($contents['directories'] as $dir) {
+            $indexContent .= "  [DIR] " . $dir['name'] . "\n";
+        }
+        $indexContent .= "\n";
+    }
+    
+    // Add files
+    if (!empty($contents['files'])) {
+        $indexContent .= "FILES:\n";
+        foreach($contents['files'] as $file) {
+            $indexContent .= sprintf("  %-30s %8s bytes %s\n", 
+                $file['name'], 
+                number_format($file['size']), 
+                $file['modified']
+            );
+        }
+    }
+    
+    return file_put_contents($indexFile, $indexContent);
+}
+
+// Demonstration
+echo "=== DIRECTORY OPERATIONS DEMONSTRATION ===\n\n";
+
+// Create test directory structure
+$testDir = "test_directory";
+$structure = [
+    "documents" => [
+        "reports" => [],
+        "notes" => []
+    ],
+    "images" => [
+        "photos" => [],
+        "thumbnails" => []
+    ],
+    "data" => [
+        "csv" => [],
+        "json" => []
+    ]
+];
+
+echo "Creating directory structure:\n";
+echo "==============================\n";
+createDirectoryStructure($testDir, $structure);
+
+// Create some test files
+file_put_contents($testDir . "/documents/report1.txt", "This is report 1");
+file_put_contents($testDir . "/documents/report2.txt", "This is report 2");
+file_put_contents($testDir . "/images/photo1.jpg", "fake image data 1");
+file_put_contents($testDir . "/images/photo2.jpg", "fake image data 2");
+file_put_contents($testDir . "/data/users.csv", "Name,Age,City\nJohn,25,NYC\nJane,30,LA");
+
+// List directory contents
+echo "\nListing directory contents:\n";
+echo "============================\n";
+$contents = listDirectoryContents($testDir, true);
+
+echo "Files found: " . count($contents['files']) . "\n";
+echo "Directories found: " . count($contents['directories']) . "\n\n";
+
+foreach($contents['files'] as $file) {
+    echo "File: " . basename($file['path']) . "\n";
+    echo "  Size: " . number_format($file['size']) . " bytes\n";
+    echo "  Modified: " . $file['modified'] . "\n\n";
+}
+
+// Calculate directory size
+echo "Directory size: " . number_format(getDirectorySize($testDir)) . " bytes\n\n";
+
+// Create file index
+echo "Creating file index:\n";
+echo "=====================\n";
+$result = createFileIndex($testDir, "file_index.txt");
+echo "File index created: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Display file index
+echo "File index contents:\n";
+echo str_repeat("-", 40) . "\n";
+echo file_get_contents("file_index.txt") . "\n";
+
+// Find files by pattern
+echo "Finding .txt files:\n";
+echo "===================\n";
+$txtFiles = findFiles("*.txt", $testDir);
+foreach($txtFiles as $file) {
+    echo "Found: $file\n";
+}
+echo "\n";
+
+// Copy directory
+echo "Copying directory:\n";
+echo "==================\n";
+$copyResult = copyDirectory($testDir, $testDir . "_copy");
+echo "Directory copy: " . ($copyResult ? "Success" : "Failed") . "\n\n";
+
+// Verify copy
+if (is_dir($testDir . "_copy")) {
+    echo "Copy verification:\n";
+    $copyContents = listDirectoryContents($testDir . "_copy");
+    echo "Files in copy: " . count($copyContents['files']) . "\n";
+    echo "Directories in copy: " . count($copyContents['directories']) . "\n\n";
+}
+
+// Clean up
+echo "Cleaning up test files:\n";
+echo "=======================\n";
+deleteDirectory($testDir);
+deleteDirectory($testDir . "_copy");
+if (file_exists("file_index.txt")) {
+    unlink("file_index.txt");
+}
+echo "Cleanup completed!\n";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4">
+                        <h4 class="font-semibold text-purple-800 mb-2">Directory Best Practices:</h4>
+                        <ul class="space-y-1 text-purple-700">
+                            <li>• Always check if directory exists before operations</li>
+                            <li>• Use appropriate permissions (0755 for directories)</li>
+                            <li>• Handle directory traversal carefully to avoid security issues</li>
+                            <li>• Use recursive functions for nested directory operations</li>
+                            <li>• Clean up temporary directories when done</li>
+                            <li>• Use DIRECTORY_SEPARATOR for cross-platform compatibility</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- File Uploads -->
+                <section id="uploads" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">File Uploads</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        File uploads are a common feature in web applications. PHP provides the $_FILES superglobal array to handle uploaded files securely.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">File Upload Handling</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// File upload handler class
+class FileUploader {
+    private $uploadDir;
+    private $allowedExtensions;
+    private $maxFileSize;
+    private $allowedMimeTypes;
+    
+    public function __construct($uploadDir = "uploads", $maxFileSize = 10485760) {
+        $this->uploadDir = $uploadDir;
+        $this->maxFileSize = $maxFileSize;
+        $this->allowedExtensions = [];
+        $this->allowedMimeTypes = [];
+        
+        // Create upload directory if it doesn't exist
+        if (!is_dir($this->uploadDir)) {
+            mkdir($this->uploadDir, 0755, true);
+        }
+    }
+    
+    public function setAllowedExtensions($extensions) {
+        $this->allowedExtensions = array_map('strtolower', $extensions);
+    }
+    
+    public function setAllowedMimeTypes($mimeTypes) {
+        $this->allowedMimeTypes = $mimeTypes;
+    }
+    
+    public function uploadFile($fileInputName, $customFilename = null) {
+        // Check if file was uploaded
+        if (!isset($_FILES[$fileInputName])) {
+            return ['success' => false, 'error' => 'No file uploaded'];
+        }
+        
+        $file = $_FILES[$fileInputName];
+        
+        // Check for upload errors
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return ['success' => false, 'error' => $this->getUploadErrorMessage($file['error'])];
+        }
+        
+        // Validate file size
+        if ($file['size'] > $this->maxFileSize) {
+            return ['success' => false, 'error' => 'File size exceeds maximum allowed size'];
+        }
+        
+        // Get file extension
+        $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        
+        // Validate file extension
+        if (!empty($this->allowedExtensions) && !in_array($fileExtension, $this->allowedExtensions)) {
+            return ['success' => false, 'error' => 'File type not allowed'];
+        }
+        
+        // Validate MIME type
+        $fileMimeType = mime_content_type($file['tmp_name']);
+        if (!empty($this->allowedMimeTypes) && !in_array($fileMimeType, $this->allowedMimeTypes)) {
+            return ['success' => false, 'error' => 'File MIME type not allowed'];
+        }
+        
+        // Generate filename
+        if ($customFilename) {
+            $filename = $customFilename . '.' . $fileExtension;
+        } else {
+            $filename = $this->generateUniqueFilename($file['name']);
+        }
+        
+        $uploadPath = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
+        
+        // Move uploaded file
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            // Set proper permissions
+            chmod($uploadPath, 0644);
+            
+            return [
+                'success' => true,
+                'filename' => $filename,
+                'filepath' => $uploadPath,
+                'size' => $file['size'],
+                'mime_type' => $fileMimeType,
+                'extension' => $fileExtension
+            ];
+        } else {
+            return ['success' => false, 'error' => 'Failed to move uploaded file'];
+        }
+    }
+    
+    private function generateUniqueFilename($originalName) {
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $basename = pathinfo($originalName, PATHINFO_FILENAME);
+        $basename = preg_replace('/[^a-zA-Z0-9_-]/', '', $basename);
+        
+        if (empty($basename)) {
+            $basename = 'file';
+        }
+        
+        $filename = $basename . '_' . uniqid() . '.' . $extension;
+        
+        // Ensure filename doesn't already exist
+        while (file_exists($this->uploadDir . DIRECTORY_SEPARATOR . $filename)) {
+            $filename = $basename . '_' . uniqid() . '.' . $extension;
+        }
+        
+        return $filename;
+    }
+    
+    private function getUploadErrorMessage($errorCode) {
+        $errors = [
+            UPLOAD_ERR_INI_SIZE => 'File size exceeds upload_max_filesize directive',
+            UPLOAD_ERR_FORM_SIZE => 'File size exceeds MAX_FILE_SIZE directive',
+            UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+            UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+            UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+            UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload'
+        ];
+        
+        return isset($errors[$errorCode]) ? $errors[$errorCode] : 'Unknown upload error';
+    }
+    
+    public function deleteFile($filename) {
+        $filepath = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
+        if (file_exists($filepath)) {
+            return unlink($filepath);
+        }
+        return false;
+    }
+    
+    public function getUploadedFiles() {
+        $files = [];
+        if (is_dir($this->uploadDir)) {
+            $items = scandir($this->uploadDir);
+            foreach($items as $item) {
+                if ($item !== '.' && $item !== '..') {
+                    $filepath = $this->uploadDir . DIRECTORY_SEPARATOR . $item;
+                    if (is_file($filepath)) {
+                        $files[] = [
+                            'name' => $item,
+                            'path' => $filepath,
+                            'size' => filesize($filepath),
+                            'modified' => date("Y-m-d H:i:s", filemtime($filepath))
+                        ];
+                    }
+                }
+            }
+        }
+        return $files;
+    }
+}
+
+// Image upload handler class
+class ImageUploader extends FileUploader {
+    private $maxWidth;
+    private $maxHeight;
+    private $quality;
+    
+    public function __construct($uploadDir = "uploads/images", $maxFileSize = 5242880) {
+        parent::__construct($uploadDir, $maxFileSize);
+        $this->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif', 'webp']);
+        $this->setAllowedMimeTypes([
+            'image/jpeg', 'image/png', 'image/gif', 'image/webp'
+        ]);
+        $this->maxWidth = 1920;
+        $this->maxHeight = 1080;
+        $this->quality = 85;
+    }
+    
+    public function resizeImage($sourcePath, $destPath, $maxWidth = null, $maxHeight = null, $quality = null) {
+        $maxWidth = $maxWidth ?: $this->maxWidth;
+        $maxHeight = $maxHeight ?: $this->maxHeight;
+        $quality = $quality ?: $this->quality;
+        
+        // Get image information
+        $imageInfo = getimagesize($sourcePath);
+        if (!$imageInfo) {
+            return false;
+        }
+        
+        $width = $imageInfo[0];
+        $height = $imageInfo[1];
+        $mimeType = $imageInfo['mime'];
+        
+        // Calculate new dimensions
+        $ratio = min($maxWidth / $width, $maxHeight / $height);
+        $newWidth = round($width * $ratio);
+        $newHeight = round($height * $ratio);
+        
+        // Create image resource
+        switch($mimeType) {
+            case 'image/jpeg':
+                $sourceImage = imagecreatefromjpeg($sourcePath);
+                break;
+            case 'image/png':
+                $sourceImage = imagecreatefrompng($sourcePath);
+                break;
+            case 'image/gif':
+                $sourceImage = imagecreatefromgif($sourcePath);
+                break;
+            case 'image/webp':
+                $sourceImage = imagecreatefromwebp($sourcePath);
+                break;
+            default:
+                return false;
+        }
+        
+        if (!$sourceImage) {
+            return false;
+        }
+        
+        // Create new image
+        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        
+        // Preserve transparency for PNG and GIF
+        if ($mimeType === 'image/png' || $mimeType === 'image/gif') {
+            imagecolortransparent($newImage, imagecolorallocatealpha($newImage, 0, 0, 0, 127));
+            imagealphablending($newImage, false);
+            imagesavealpha($newImage, true);
+        }
+        
+        // Resize image
+        imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        
+        // Save resized image
+        $result = false;
+        switch($mimeType) {
+            case 'image/jpeg':
+                $result = imagejpeg($newImage, $destPath, $quality);
+                break;
+            case 'image/png':
+                $result = imagepng($newImage, $destPath, round(9 * (100 - $quality) / 100));
+                break;
+            case 'image/gif':
+                $result = imagegif($newImage, $destPath);
+                break;
+            case 'image/webp':
+                $result = imagewebp($newImage, $destPath, $quality);
+                break;
+        }
+        
+        // Clean up
+        imagedestroy($sourceImage);
+        imagedestroy($newImage);
+        
+        return $result;
+    }
+    
+    public function createThumbnail($sourcePath, $thumbPath, $thumbWidth = 150, $thumbHeight = 150) {
+        return $this->resizeImage($sourcePath, $thumbPath, $thumbWidth, $thumbHeight, 75);
+    }
+}
+
+// Demonstration
+echo "=== FILE UPLOAD DEMONSTRATION ===\n\n";
+
+// Simulate file upload for demonstration
+// In real application, this would come from HTML form
+$_FILES = [
+    'document' => [
+        'name' => 'test_document.pdf',
+        'type' => 'application/pdf',
+        'tmp_name' => '/tmp/php_test_file.pdf',
+        'error' => UPLOAD_ERR_OK,
+        'size' => 102400
+    ],
+    'image' => [
+        'name' => 'test_image.jpg',
+        'type' => 'image/jpeg',
+        'tmp_name' => '/tmp/php_test_file.jpg',
+        'error' => UPLOAD_ERR_OK,
+        'size' => 204800
+    ]
+];
+
+// Create temporary files for demonstration
+file_put_contents('/tmp/php_test_file.pdf', 'Fake PDF content');
+file_put_contents('/tmp/php_test_file.jpg', 'Fake image content');
+
+// Regular file uploader
+$uploader = new FileUploader('uploads', 5242880); // 5MB max size
+$uploader->setAllowedExtensions(['pdf', 'doc', 'docx', 'txt']);
+
+// Image uploader
+$imageUploader = new ImageUploader('uploads/images', 2097152); // 2MB max size
+
+// Upload regular file
+echo "Uploading document:\n";
+echo "===================\n";
+$result = $uploader->uploadFile('document');
+if ($result['success']) {
+    echo "File uploaded successfully!\n";
+    echo "Filename: " . $result['filename'] . "\n";
+    echo "Filepath: " . $result['filepath'] . "\n";
+    echo "Size: " . number_format($result['size']) . " bytes\n";
+    echo "MIME Type: " . $result['mime_type'] . "\n\n";
+} else {
+    echo "Upload failed: " . $result['error'] . "\n\n";
+}
+
+// Upload image
+echo "Uploading image:\n";
+echo "================\n";
+$imageResult = $imageUploader->uploadFile('image', 'user_profile');
+if ($imageResult['success']) {
+    echo "Image uploaded successfully!\n";
+    echo "Filename: " . $imageResult['filename'] . "\n";
+    echo "Filepath: " . $imageResult['filepath'] . "\n";
+    echo "Size: " . number_format($imageResult['size']) . " bytes\n\n";
+    
+    // Create thumbnail (would work with real image)
+    // $imageUploader->createThumbnail($imageResult['filepath'], $imageResult['filepath'] . '_thumb.jpg');
+} else {
+    echo "Image upload failed: " . $imageResult['error'] . "\n\n";
+}
+
+// List uploaded files
+echo "Uploaded files:\n";
+echo "================\n";
+$uploadedFiles = $uploader->getUploadedFiles();
+foreach($uploadedFiles as $file) {
+    echo $file['name'] . " (" . number_format($file['size']) . " bytes) - " . $file['modified'] . "\n";
+}
+
+// Clean up
+echo "\nCleaning up uploaded files...\n";
+$uploadedFiles = $uploader->getUploadedFiles();
+foreach($uploadedFiles as $file) {
+    $uploader->deleteFile($file['name']);
+}
+
+// Remove temporary files
+unlink('/tmp/php_test_file.pdf');
+unlink('/tmp/php_test_file.jpg');
+
+echo "Cleanup completed!\n";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4">
+                        <h4 class="font-semibold text-orange-800 mb-2">File Upload Security:</h4>
+                        <ul class="space-y-1 text-orange-700">
+                            <li>• Validate file extensions and MIME types</li>
+                            <li>• Check file size limits</li>
+                            <li>• Use move_uploaded_file() for security</li>
+                            <li>• Generate unique filenames to prevent conflicts</li>
+                            <li>• Set appropriate file permissions</li>
+                            <li>• Scan uploaded files for malware</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section id="examples" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Practical Code Examples</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 1: Simple File Manager</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">File Manager Class</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+class SimpleFileManager {
+    private $basePath;
+    private $currentPath;
+    
+    public function __construct($basePath = '.') {
+        $this->basePath = realpath($basePath);
+        $this->currentPath = $this->basePath;
+    }
+    
+    public function listFiles() {
+        $files = [];
+        $directories = [];
+        
+        if (is_dir($this->currentPath)) {
+            $items = scandir($this->currentPath);
+            
+            foreach($items as $item) {
+                if ($item === '.' || $item === '..') {
+                    continue;
+                }
+                
+                $fullPath = $this->currentPath . DIRECTORY_SEPARATOR . $item;
+                
+                if (is_file($fullPath)) {
+                    $files[] = [
+                        'name' => $item,
+                        'size' => filesize($fullPath),
+                        'modified' => filemtime($fullPath),
+                        'type' => 'file'
+                    ];
+                } elseif (is_dir($fullPath)) {
+                    $directories[] = [
+                        'name' => $item,
+                        'modified' => filemtime($fullPath),
+                        'type' => 'directory'
+                    ];
+                }
+            }
+        }
+        
+        // Sort: directories first, then files
+        usort($directories, function($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
+        
+        usort($files, function($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
+        
+        return array_merge($directories, $files);
+    }
+    
+    public function changeDirectory($directory) {
+        $newPath = $this->currentPath . DIRECTORY_SEPARATOR . $directory;
+        $newPath = realpath($newPath);
+        
+        if ($newPath && strpos($newPath, $this->basePath) === 0) {
+            $this->currentPath = $newPath;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public function getCurrentPath() {
+        return $this->currentPath;
+    }
+    
+    public function getRelativePath() {
+        return str_replace($this->basePath, '', $this->currentPath);
+    }
+    
+    public function createFile($filename, $content = '') {
+        $filepath = $this->currentPath . DIRECTORY_SEPARATOR . $filename;
+        
+        if (file_exists($filepath)) {
+            return false;
+        }
+        
+        return file_put_contents($filepath, $content) !== false;
+    }
+    
+    public function createDirectory($dirname) {
+        $dirpath = $this->currentPath . DIRECTORY_SEPARATOR . $dirname;
+        
+        if (is_dir($dirpath)) {
+            return false;
+        }
+        
+        return mkdir($dirpath, 0755);
+    }
+    
+    public function deleteFile($filename) {
+        $filepath = $this->currentPath . DIRECTORY_SEPARATOR . $filename;
+        
+        if (!file_exists($filepath)) {
+            return false;
+        }
+        
+        return unlink($filepath);
+    }
+    
+    public function deleteDirectory($dirname) {
+        $dirpath = $this->currentPath . DIRECTORY_SEPARATOR . $dirname;
+        
+        if (!is_dir($dirpath)) {
+            return false;
+        }
+        
+        // Check if directory is empty
+        $items = scandir($dirpath);
+        foreach($items as $item) {
+            if ($item !== '.' && $item !== '..') {
+                return false; // Directory not empty
+            }
+        }
+        
+        return rmdir($dirpath);
+    }
+    
+    public function renameItem($oldName, $newName) {
+        $oldPath = $this->currentPath . DIRECTORY_SEPARATOR . $oldName;
+        $newPath = $this->currentPath . DIRECTORY_SEPARATOR . $newName;
+        
+        if (!file_exists($oldPath) || file_exists($newPath)) {
+            return false;
+        }
+        
+        return rename($oldPath, $newPath);
+    }
+    
+    public function readFile($filename) {
+        $filepath = $this->currentPath . DIRECTORY_SEPARATOR . $filename;
+        
+        if (!is_file($filepath)) {
+            return false;
+        }
+        
+        return file_get_contents($filepath);
+    }
+    
+    public function writeFile($filename, $content) {
+        $filepath = $this->currentPath . DIRECTORY_SEPARATOR . $filename;
+        
+        return file_put_contents($filepath, $content) !== false;
+    }
+    
+    public function getFileInfo($filename) {
+        $filepath = $this->currentPath . DIRECTORY_SEPARATOR . $filename;
+        
+        if (!file_exists($filepath)) {
+            return false;
+        }
+        
+        return [
+            'name' => basename($filepath),
+            'path' => $filepath,
+            'size' => filesize($filepath),
+            'modified' => filemtime($filepath),
+            'permissions' => substr(sprintf('%o', fileperms($filepath)), -4),
+            'is_readable' => is_readable($filepath),
+            'is_writable' => is_writable($filepath),
+            'is_executable' => is_executable($filepath)
+        ];
+    }
+}
+
+// Demonstration
+echo "=== SIMPLE FILE MANAGER DEMONSTRATION ===\n\n";
+
+// Create test directory
+$testDir = "file_manager_test";
+if (!is_dir($testDir)) {
+    mkdir($testDir, 0755, true);
+}
+
+// Create file manager instance
+$fm = new SimpleFileManager($testDir);
+
+echo "Current directory: " . $fm->getRelativePath() . "\n\n";
+
+// Create some test files and directories
+echo "Creating test files and directories:\n";
+echo "====================================\n";
+$fm->createDirectory("documents");
+$fm->createDirectory("images");
+$fm->createFile("readme.txt", "This is a test file manager.\nCreated for demonstration purposes.");
+$fm->createFile("config.json", json_encode(['version' => '1.0', 'author' => 'Test User'], JSON_PRETTY_PRINT));
+$fm->writeFile("documents/report.txt", "Quarterly Report\n================\nThis is a sample report.");
+
+echo "Test files and directories created.\n\n";
+
+// List current directory
+echo "Listing current directory contents:\n";
+echo "===================================\n";
+$items = $fm->listFiles();
+echo "Total items: " . count($items) . "\n\n";
+
+foreach($items as $item) {
+    $icon = $item['type'] === 'directory' ? '📁' : '📄';
+    $size = isset($item['size']) ? ' (' . number_format($item['size']) . ' bytes)' : '';
+    echo "$icon " . $item['name'] . $size . "\n";
+}
+
+// Navigate to documents directory
+echo "\nNavigating to documents directory:\n";
+echo "==================================\n";
+$fm->changeDirectory("documents");
+echo "New current directory: " . $fm->getRelativePath() . "\n\n";
+
+// List documents directory
+$docs = $fm->listFiles();
+echo "Files in documents: " . count($docs) . "\n";
+foreach($docs as $doc) {
+    echo "📄 " . $doc['name'] . " (" . number_format($doc['size']) . " bytes)\n";
+}
+
+// Read file content
+echo "\nReading report.txt:\n";
+echo "===================\n";
+$reportContent = $fm->readFile("report.txt");
+echo $reportContent . "\n";
+
+// Get file info
+echo "File info for report.txt:\n";
+echo "=========================\n";
+$fileInfo = $fm->getFileInfo("report.txt");
+if ($fileInfo) {
+    echo "Name: " . $fileInfo['name'] . "\n";
+    echo "Size: " . number_format($fileInfo['size']) . " bytes\n";
+    echo "Modified: " . date("Y-m-d H:i:s", $fileInfo['modified']) . "\n";
+    echo "Permissions: " . $fileInfo['permissions'] . "\n";
+    echo "Readable: " . ($fileInfo['is_readable'] ? 'Yes' : 'No') . "\n";
+    echo "Writable: " . ($fileInfo['is_writable'] ? 'Yes' : 'No') . "\n";
+}
+
+// Go back to parent directory
+$fm->changeDirectory("..");
+echo "\nBack to parent directory: " . $fm->getRelativePath() . "\n\n";
+
+// Rename a file
+echo "Renaming readme.txt to info.txt:\n";
+echo "=================================\n";
+$result = $fm->renameItem("readme.txt", "info.txt");
+echo "Rename result: " . ($result ? "Success" : "Failed") . "\n\n";
+
+// Final directory listing
+echo "Final directory listing:\n";
+echo "========================\n";
+$finalItems = $fm->listFiles();
+foreach($finalItems as $item) {
+    $icon = $item['type'] === 'directory' ? '📁' : '📄';
+    $size = isset($item['size']) ? ' (' . number_format($item['size']) . ' bytes)' : '';
+    echo "$icon " . $item['name'] . $size . "\n";
+}
+
+// Clean up
+$fm->changeDirectory("documents");
+$fm->deleteFile("report.txt");
+$fm->changeDirectory("..");
+$fm->deleteDirectory("documents");
+$fm->deleteDirectory("images");
+$fm->deleteFile("info.txt");
+$fm->deleteFile("config.json");
+
+// Remove test directory
+if (is_dir($testDir)) {
+    $items = scandir($testDir);
+    foreach($items as $item) {
+        if ($item !== '.' && $item !== '..') {
+            $path = $testDir . DIRECTORY_SEPARATOR . $item;
+            if (is_file($path)) {
+                unlink($path);
+            } elseif (is_dir($path)) {
+                deleteDirectory($path);
+            }
+        }
+    }
+    rmdir($testDir);
+}
+
+echo "\nCleanup completed!\n";
+
+// Helper function to delete directory recursively
+function deleteDirectory($path) {
+    if (!is_dir($path)) {
+        return false;
+    }
+    
+    $items = scandir($path);
+    foreach($items as $item) {
+        if ($item !== '.' && $item !== '..') {
+            $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+            if (is_file($fullPath)) {
+                unlink($fullPath);
+            } elseif (is_dir($fullPath)) {
+                deleteDirectory($fullPath);
+            }
+        }
+    }
+    
+    return rmdir($path);
+}
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 2: Configuration File Handler</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">Configuration Management</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+class ConfigManager {
+    private $configDir;
+    private $configFile;
+    private $configData;
+    
+    public function __construct($configName = 'app') {
+        $this->configDir = 'config';
+        $this->configFile = $this->configDir . DIRECTORY_SEPARATOR . $configName . '.json';
+        $this->configData = [];
+        
+        // Create config directory if it doesn't exist
+        if (!is_dir($this->configDir)) {
+            mkdir($this->configDir, 0755, true);
+        }
+        
+        // Load existing configuration
+        $this->loadConfig();
+    }
+    
+    public function loadConfig() {
+        if (file_exists($this->configFile)) {
+            $content = file_get_contents($this->configFile);
+            $this->configData = json_decode($content, true) ?: [];
+        }
+        return $this->configData;
+    }
+    
+    public function saveConfig() {
+        $content = json_encode($this->configData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return file_put_contents($this->configFile, $content) !== false;
+    }
+    
+    public function get($key, $default = null) {
+        $keys = explode('.', $key);
+        $data = $this->configData;
+        
+        foreach($keys as $k) {
+            if (!isset($data[$k])) {
+                return $default;
+            }
+            $data = $data[$k];
+        }
+        
+        return $data;
+    }
+    
+    public function set($key, $value) {
+        $keys = explode('.', $key);
+        $data = &$this->configData;
+        
+        foreach($keys as $i => $k) {
+            if (count($keys) === 1) {
+                break;
+            }
+            
+            unset($keys[$i]);
+            
+            if (!isset($data[$k]) || !is_array($data[$k])) {
+                $data[$k] = [];
+            }
+            
+            $data = &$data[$k];
+        }
+        
+        $data[array_shift($keys)] = $value;
+        return $this->saveConfig();
+    }
+    
+    public function has($key) {
+        return $this->get($key) !== null;
+    }
+    
+    public function remove($key) {
+        $keys = explode('.', $key);
+        $data = &$this->configData;
+        
+        foreach($keys as $i => $k) {
+            if (count($keys) === 1) {
+                break;
+            }
+            
+            unset($keys[$i]);
+            
+            if (!isset($data[$k]) || !is_array($data[$k])) {
+                return false;
+            }
+            
+            $data = &$data[$k];
+        }
+        
+        $key = array_shift($keys);
+        if (isset($data[$key])) {
+            unset($data[$key]);
+            return $this->saveConfig();
+        }
+        
+        return false;
+    }
+    
+    public function all() {
+        return $this->configData;
+    }
+    
+    public function clear() {
+        $this->configData = [];
+        return $this->saveConfig();
+    }
+    
+    public function merge($data) {
+        $this->configData = array_merge_recursive($this->configData, $data);
+        return $this->saveConfig();
+    }
+    
+    public function export($format = 'json') {
+        switch(strtolower($format)) {
+            case 'json':
+                return json_encode($this->configData, JSON_PRETTY_PRINT);
+            
+            case 'php':
+                return "<?php\nreturn " . var_export($this->configData, true) . ";\n";
+            
+            case 'ini':
+                $iniContent = "; Configuration file\n; Generated on " . date('Y-m-d H:i:s') . "\n\n";
+                return $iniContent . $this->arrayToIni($this->configData);
+            
+            default:
+                return json_encode($this->configData);
+        }
+    }
+    
+    private function arrayToIni($array, $parentKey = '') {
+        $ini = '';
+        
+        foreach($array as $key => $value) {
+            $fullKey = $parentKey ? $parentKey . '.' . $key : $key;
+            
+            if (is_array($value)) {
+                if (is_numeric($key)) {
+                    $ini .= $this->arrayToIni($value, $fullKey);
+                } else {
+                    $ini .= "[$fullKey]\n";
+                    $ini .= $this->arrayToIni($value);
+                    $ini .= "\n";
+                }
+            } else {
+                if (is_bool($value)) {
+                    $value = $value ? 'true' : 'false';
+                } elseif (is_numeric($value)) {
+                    $value = (string)$value;
+                } else {
+                    $value = '"' . addslashes($value) . '"';
+                }
+                $ini .= $fullKey . ' = ' . $value . "\n";
+            }
+        }
+        
+        return $ini;
+    }
+    
+    public function backup($backupName = null) {
+        $backupName = $backupName ?: 'backup_' . date('Y-m-d_H-i-s');
+        $backupFile = $this->configDir . DIRECTORY_SEPARATOR . $backupName . '.json';
+        
+        $backupData = [
+            'timestamp' => time(),
+            'version' => '1.0',
+            'config' => $this->configData
+        ];
+        
+        $content = json_encode($backupData, JSON_PRETTY_PRINT);
+        return file_put_contents($backupFile, $content) !== false;
+    }
+    
+    public function restore($backupName) {
+        $backupFile = $this->configDir . DIRECTORY_SEPARATOR . $backupName . '.json';
+        
+        if (!file_exists($backupFile)) {
+            return false;
+        }
+        
+        $content = file_get_contents($backupFile);
+        $backupData = json_decode($content, true);
+        
+        if (isset($backupData['config'])) {
+            $this->configData = $backupData['config'];
+            return $this->saveConfig();
+        }
+        
+        return false;
+    }
+}
+
+// Demonstration
+echo "=== CONFIGURATION MANAGER DEMONSTRATION ===\n\n";
+
+// Create configuration manager
+$config = new ConfigManager('demo_app');
+
+echo "Setting configuration values:\n";
+echo "==============================\n";
+$config->set('app.name', 'My PHP Application');
+$config->set('app.version', '1.0.0');
+$config->set('app.debug', true);
+$config->set('app.max_upload_size', 10485760);
+
+$config->set('database.host', 'localhost');
+$config->set('database.port', 3306);
+$config->set('database.name', 'myapp_db');
+$config->set('database.user', 'app_user');
+$config->set('database.password', 'secure_password');
+
+$config->set('security.csrf_protection', true);
+$config->set('security.session_timeout', 3600);
+$config->set('security.allowed_origins', ['localhost', 'example.com']);
+
+echo "Configuration values set successfully!\n\n";
+
+// Retrieve configuration values
+echo "Retrieving configuration values:\n";
+echo "=================================\n";
+echo "App Name: " . $config->get('app.name') . "\n";
+echo "App Version: " . $config->get('app.version') . "\n";
+echo "Debug Mode: " . ($config->get('app.debug') ? 'Enabled' : 'Disabled') . "\n";
+echo "Database Host: " . $config->get('database.host') . "\n";
+echo "Database Port: " . $config->get('database.port') . "\n";
+echo "Database Name: " . $config->get('database.name') . "\n";
+echo "Session Timeout: " . $config->get('security.session_timeout') . " seconds\n";
+echo "Allowed Origins: " . implode(', ', $config->get('security.allowed_origins')) . "\n\n";
+
+// Check if configuration exists
+echo "Checking configuration existence:\n";
+echo "==================================\n";
+echo "Has app.name: " . ($config->has('app.name') ? 'Yes' : 'No') . "\n";
+echo "Has app.nonexistent: " . ($config->has('app.nonexistent') ? 'Yes' : 'No') . "\n";
+echo "Has database.host: " . ($config->has('database.host') ? 'Yes' : 'No') . "\n\n";
+
+// Update configuration
+echo "Updating configuration:\n";
+echo "========================\n";
+$config->set('app.version', '1.1.0');
+$config->set('security.csrf_protection', false);
+echo "App version updated to: " . $config->get('app.version') . "\n";
+echo "CSRF protection: " . ($config->get('security.csrf_protection') ? 'Enabled' : 'Disabled') . "\n\n";
+
+// Remove configuration
+echo "Removing configuration:\n";
+echo "========================\n";
+$config->remove('app.debug');
+echo "Has app.debug after removal: " . ($config->has('app.debug') ? 'Yes' : 'No') . "\n\n";
+
+// Export configuration
+echo "Exporting configuration:\n";
+echo "=========================\n";
+echo "JSON Export:\n";
+echo $config->export('json') . "\n\n";
+
+echo "PHP Export:\n";
+echo $config->export('php') . "\n\n";
+
+// Backup configuration
+echo "Creating backup:\n";
+echo "=================\n";
+$result = $config->backup('demo_backup');
+echo "Backup created: " . ($result ? 'Success' : 'Failed') . "\n\n";
+
+// List all configuration
+echo "All configuration values:\n";
+echo "=========================\n";
+$allConfig = $config->all();
+echo json_encode($allConfig, JSON_PRETTY_PRINT) . "\n\n";
+
+// Clean up
+echo "Cleaning up configuration files...\n";
+$config->clear();
+
+// Remove backup files
+$backupFiles = glob('config/demo_backup_*.json');
+foreach($backupFiles as $file) {
+    unlink($file);
+}
+
+// Remove config file
+if (file_exists('config/demo_app.json')) {
+    unlink('config/demo_app.json');
+}
+
+// Remove config directory if empty
+if (is_dir('config')) {
+    $items = scandir('config');
+    if (count($items) <= 2) { // Only . and ..
+        rmdir('config');
+    }
+}
+
+echo "Cleanup completed!\n";
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- External Resources -->
+                <section class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">External Resources</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.php.net/manual/en/ref.filesystem.php" target="_blank" class="text-red-600 hover:text-red-800">
+                                    PHP Filesystem Functions
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Official PHP documentation for all filesystem and file handling functions.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.geeksforgeeks.org/php-file-handling/" target="_blank" class="text-red-600 hover:text-red-800">
+                                    PHP File Handling Guide
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Comprehensive guide to PHP file operations with practical examples.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.w3schools.com/php/php_file.asp" target="_blank" class="text-red-600 hover:text-red-800">
+                                    W3Schools PHP File Handling
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Interactive PHP file handling tutorial with live examples.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://github.com/php/php-src" target="_blank" class="text-red-600 hover:text-red-800">
+                                    PHP Core File Implementation
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Explore how file handling functions are implemented in PHP's core.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Chapter Quiz -->
+                <section id="quiz" class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Chapter Quiz</h2>
+                    <p class="text-gray-600 mb-6">Test your understanding of PHP file handling with this interactive quiz.</p>
+                    
+                    <div class="text-center">
+                        <button onclick="startQuiz('chapter5')" class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors text-lg font-semibold">
+                            Start Chapter 5 Quiz
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">3 questions • Multiple choice & true/false</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+        
+        // Bookmark functionality
+        function toggleBookmark(chapter) {
+            const button = event.currentTarget;
+            button.classList.toggle('bookmarked');
+            
+            // Save to localStorage
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (button.classList.contains('bookmarked')) {
+                if (!bookmarks.includes(chapter)) {
+                    bookmarks.push(chapter);
+                }
+            } else {
+                const index = bookmarks.indexOf(chapter);
+                if (index > -1) {
+                    bookmarks.splice(index, 1);
+                }
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+        
+        // Load bookmark status
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (bookmarks.includes('chapter5')) {
+                document.querySelector('.bookmark-btn').classList.add('bookmarked');
+            }
+        });
+    </script>
+</body>
+</html>

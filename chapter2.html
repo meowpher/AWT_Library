@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Functions and Strings - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .code-block { background: #2d3748; border-radius: 8px; overflow: hidden; }
+        .code-header { background: #4a5568; padding: 12px 16px; font-size: 14px; color: #e2e8f0; }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: #718096; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .copy-btn:hover { background: #a0aec0; }
+        .concept-card { transition: all 0.3s ease; }
+        .concept-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .diff-table { border-collapse: collapse; width: 100%; }
+        .diff-table th, .diff-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        .diff-table th { background: #f7fafc; font-weight: 600; }
+        .bookmark-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); border: none; padding: 8px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .bookmark-btn:hover { background: white; transform: scale(1.1); }
+        .bookmark-btn.bookmarked { background: #fbbf24; color: white; }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 1</a>
+                    <a href="chapter2.html" class="text-blue-600 font-medium">Chapter 2</a>
+                    <a href="chapter3.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 3</a>
+                    <a href="chapter4.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 4</a>
+                    <a href="chapter5.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 5</a>
+                    <a href="papers.html" class="text-gray-600 hover:text-blue-600 transition-colors">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chapter Header -->
+    <section class="bg-gradient-to-r from-green-600 to-green-800 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white">
+                <nav class="text-green-200 mb-4">
+                    <a href="index.html" class="hover:text-white">Home</a> / 
+                    <span>Chapter 2</span>
+                </nav>
+                <h1 class="text-4xl font-display font-bold mb-4">Functions and Strings</h1>
+                <p class="text-xl text-green-100 max-w-3xl">
+                    Master PHP functions including built-in functions, user-defined functions, and comprehensive string manipulation techniques.
+                </p>
+                <button class="bookmark-btn" onclick="toggleBookmark('chapter2')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-24">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Table of Contents</h3>
+                    <nav class="space-y-2">
+                        <a href="#functions" class="block text-blue-600 hover:text-blue-800 py-1">PHP Functions</a>
+                        <a href="#built-in" class="block text-gray-600 hover:text-blue-600 py-1">Built-in Functions</a>
+                        <a href="#user-defined" class="block text-gray-600 hover:text-blue-600 py-1">User-defined Functions</a>
+                        <a href="#parameters" class="block text-gray-600 hover:text-blue-600 py-1">Function Parameters</a>
+                        <a href="#strings" class="block text-gray-600 hover:text-blue-600 py-1">String Functions</a>
+                        <a href="#examples" class="block text-gray-600 hover:text-blue-600 py-1">Code Examples</a>
+                        <a href="#quiz" class="block text-gray-600 hover:text-blue-600 py-1">Chapter Quiz</a>
+                    </nav>
+                    
+                    <div class="mt-6 pt-6 border-t">
+                        <button onclick="startQuiz('chapter2')" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Functions Overview -->
+                <section id="functions" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">PHP Functions</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 mb-4">
+                            A function is a block of statements that can be used repeatedly in a program. Functions help organize code, reduce repetition, and make programs more modular and maintainable.
+                        </p>
+                        
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                            <h4 class="font-semibold text-green-800 mb-2">Benefits of Using Functions:</h4>
+                            <ul class="space-y-2 text-green-700">
+                                <li>• <strong>Code Reusability:</strong> Write once, use multiple times</li>
+                                <li>• <strong>Modularity:</strong> Break complex problems into smaller, manageable pieces</li>
+                                <li>• <strong>Maintainability:</strong> Easier to update and debug code</li>
+                                <li>• <strong>Readability:</strong> Makes code more organized and understandable</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="text-gray-700">
+                            PHP has over 1000+ built-in functions that can be called directly, and you can also create your own custom functions.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Built-in Functions -->
+                <section id="built-in" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Built-in Functions</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides a rich set of built-in functions that perform common tasks. These functions are ready to use without any additional setup.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">String Functions</h4>
+                            <ul class="space-y-1 text-gray-600 text-sm">
+                                <li>• strlen() - Get string length</li>
+                                <li>• strpos() - Find position of substring</li>
+                                <li>• substr() - Extract part of string</li>
+                                <li>• str_replace() - Replace text in string</li>
+                                <li>• strtolower() - Convert to lowercase</li>
+                                <li>• strtoupper() - Convert to uppercase</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Array Functions</h4>
+                            <ul class="space-y-1 text-gray-600 text-sm">
+                                <li>• count() - Count array elements</li>
+                                <li>• array_push() - Add elements to array</li>
+                                <li>• array_pop() - Remove last element</li>
+                                <li>• array_merge() - Merge arrays</li>
+                                <li>• sort() - Sort array</li>
+                                <li>• in_array() - Check if value exists</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Date/Time Functions</h4>
+                            <ul class="space-y-1 text-gray-600 text-sm">
+                                <li>• date() - Format date and time</li>
+                                <li>• time() - Get current timestamp</li>
+                                <li>• strtotime() - Convert string to timestamp</li>
+                                <li>• mktime() - Create timestamp</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Mathematical Functions</h4>
+                            <ul class="space-y-1 text-gray-600 text-sm">
+                                <li>• abs() - Absolute value</li>
+                                <li>• round() - Round numbers</li>
+                                <li>• rand() - Generate random number</li>
+                                <li>• max() - Find maximum value</li>
+                                <li>• min() - Find minimum value</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Built-in Functions Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// String functions
+$name = "PHP Programming";
+echo strlen($name);           // Output: 16
+echo strpos($name, "Prog");   // Output: 4
+echo strtoupper($name);       // Output: PHP PROGRAMMING
+
+// Array functions
+$numbers = array(5, 2, 8, 1, 9);
+echo count($numbers);         // Output: 5
+sort($numbers);
+print_r($numbers);            // Output: Array ( [0] => 1 [1] => 2 [2] => 5 [3] => 8 [4] => 9 )
+
+// Date functions
+echo date("Y-m-d H:i:s");     // Output: Current date and time
+echo time();                  // Output: Current timestamp
+
+// Mathematical functions
+echo abs(-42);                // Output: 42
+echo round(3.14159, 2);       // Output: 3.14
+echo rand(1, 100);            // Output: Random number between 1 and 100
+?&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- User-defined Functions -->
+                <section id="user-defined" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">User-defined Functions</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        You can create your own functions to perform specific tasks. A user-defined function declaration starts with the word "function".
+                    </p>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Function Naming Rules:</h4>
+                        <ul class="space-y-1 text-yellow-700">
+                            <li>• Must start with a letter or underscore</li>
+                            <li>• Function names are NOT case-sensitive</li>
+                            <li>• Cannot use reserved keywords</li>
+                            <li>• Should be descriptive and meaningful</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">User-defined Function Syntax</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Basic function syntax
+function functionName() {
+    // Function body
+    // Code to be executed
+}
+
+// Function with parameters
+function functionName($parameter1, $parameter2) {
+    // Function body
+    return $result;
+}
+
+// Two steps to use functions:
+// 1. Function definition
+// 2. Function call
+
+// Example 1: Simple function
+greetUser();
+
+greetUser() {
+    echo "Hello, Welcome to PHP!";
+}
+
+// Example 2: Function with parameters
+function addNumbers($a, $b) {
+    $sum = $a + $b;
+    return $sum;
+}
+
+$result = addNumbers(10, 20);
+echo "The sum is: $result";  // Output: The sum is: 30
+?&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Function Parameters -->
+                <section id="parameters" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Function Parameters</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Functions can accept parameters (also known as arguments) to make them more flexible and reusable.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">Non-parameterized Functions</h4>
+                            <p class="text-blue-700 text-sm">Functions that don't accept any parameters and perform fixed operations.</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-800 mb-2">Parameterized Functions</h4>
+                            <p class="text-green-700 text-sm">Functions that accept parameters to make them more flexible and reusable.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Function Parameter Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Non-parameterized function
+function displayWelcome() {
+    echo "Hello World!!!";
+}
+
+displayWelcome();  // Output: Hello World!!!
+
+// Parameterized function
+function display($message) {
+    echo $message;
+}
+
+display("Welcome to PHP!");  // Output: Welcome to PHP!
+display("Learning functions");  // Output: Learning functions
+
+// Function with multiple parameters
+function calculate($num1, $num2, $operation) {
+    switch($operation) {
+        case 'add':
+            return $num1 + $num2;
+        case 'subtract':
+            return $num1 - $num2;
+        case 'multiply':
+            return $num1 * $num2;
+        case 'divide':
+            return $num2 != 0 ? $num1 / $num2 : "Cannot divide by zero";
+        default:
+            return "Invalid operation";
+    }
+}
+
+echo calculate(10, 5, 'add');        // Output: 15
+echo calculate(10, 5, 'multiply');   // Output: 50
+echo calculate(10, 0, 'divide');     // Output: Cannot divide by zero
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4">
+                        <h4 class="font-semibold text-purple-800 mb-2">Parameter Types:</h4>
+                        <ul class="space-y-1 text-purple-700">
+                            <li>• <strong>Required Parameters:</strong> Must be provided when calling the function</li>
+                            <li>• <strong>Optional Parameters:</strong> Have default values and are not required</li>
+                            <li>• <strong>Variable Arguments:</strong> Can accept unlimited number of arguments</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- String Functions -->
+                <section id="strings" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">String Functions</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides powerful string manipulation functions. Here are some of the most commonly used string functions:
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="diff-table">
+                            <thead>
+                                <tr>
+                                    <th>Function</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>strlen()</td>
+                                    <td>Returns the length of a string</td>
+                                    <td>strlen("Hello") → 5</td>
+                                </tr>
+                                <tr>
+                                    <td>strpos()</td>
+                                    <td>Finds the position of the first occurrence of a substring</td>
+                                    <td>strpos("Hello World", "World") → 6</td>
+                                </tr>
+                                <tr>
+                                    <td>str_replace()</td>
+                                    <td>Replaces all occurrences of a search string</td>
+                                    <td>str_replace("World", "PHP", "Hello World") → "Hello PHP"</td>
+                                </tr>
+                                <tr>
+                                    <td>strtolower()</td>
+                                    <td>Converts string to lowercase</td>
+                                    <td>strtolower("HELLO") → "hello"</td>
+                                </tr>
+                                <tr>
+                                    <td>strtoupper()</td>
+                                    <td>Converts string to uppercase</td>
+                                    <td>strtoupper("hello") → "HELLO"</td>
+                                </tr>
+                                <tr>
+                                    <td>substr()</td>
+                                    <td>Returns part of a string</td>
+                                    <td>substr("Hello World", 0, 5) → "Hello"</td>
+                                </tr>
+                                <tr>
+                                    <td>trim()</td>
+                                    <td>Removes whitespace from both ends</td>
+                                    <td>trim("  Hello  ") → "Hello"</td>
+                                </tr>
+                                <tr>
+                                    <td>explode()</td>
+                                    <td>Splits a string into an array</td>
+                                    <td>explode(" ", "Hello World") → ["Hello", "World"]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="code-block relative">
+                        <div class="code-header">String Functions Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// String length
+$text = "PHP Programming";
+echo "Length: " . strlen($text) . "\n";  // Output: Length: 16
+
+// String position
+$position = strpos($text, "Prog");
+echo "Position of 'Prog': $position\n";  // Output: Position of 'Prog': 4
+
+// String replacement
+$newText = str_replace("Programming", "Development", $text);
+echo "Replaced: $newText\n";  // Output: Replaced: PHP Development
+
+// Case conversion
+echo "Uppercase: " . strtoupper($text) . "\n";  // Output: Uppercase: PHP PROGRAMMING
+echo "Lowercase: " . strtolower($text) . "\n";  // Output: Lowercase: php programming
+
+// String extraction
+$substring = substr($text, 4, 11);
+echo "Substring: $substring\n";  // Output: Substring: Programming
+
+// String splitting
+$words = explode(" ", "Hello World from PHP");
+print_r($words);
+// Output: Array ( [0] => Hello [1] => World [2] => from [3] => PHP )
+
+// String trimming
+$spaced = "  Extra spaces  ";
+echo "Original: '$spaced'\n";  // Output: Original: '  Extra spaces  '
+echo "Trimmed: '" . trim($spaced) . "'\n";  // Output: Trimmed: 'Extra spaces'
+?&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section id="examples" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Practical Code Examples</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 1: String Manipulation Function</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">Custom String Processor</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+function processString($input) {
+    // Remove extra spaces
+    $cleaned = trim($input);
+    
+    // Convert to proper case
+    $properCase = ucwords(strtolower($cleaned));
+    
+    // Get word count
+    $wordCount = str_word_count($properCase);
+    
+    // Get character count (excluding spaces)
+    $charCount = strlen(str_replace(' ', '', $properCase));
+    
+    // Return processed information
+    return array(
+        'original' => $input,
+        'processed' => $properCase,
+        'wordCount' => $wordCount,
+        'charCount' => $charCount,
+        'length' => strlen($properCase)
+    );
+}
+
+// Test the function
+$testString = "  hello world from php  ";
+$result = processString($testString);
+
+echo "Original: '" . $result['original'] . "'\n";
+echo "Processed: '" . $result['processed'] . "'\n";
+echo "Word Count: " . $result['wordCount'] . "\n";
+echo "Character Count: " . $result['charCount'] . "\n";
+echo "Total Length: " . $result['length'] . "\n";
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 2: Calculator Function</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">Advanced Calculator</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+function calculator($num1, $num2, $operation = 'add') {
+    // Validate inputs
+    if (!is_numeric($num1) || !is_numeric($num2)) {
+        return "Error: Both inputs must be numbers";
+    }
+    
+    // Perform calculation based on operation
+    switch(strtolower($operation)) {
+        case 'add':
+        case '+':
+            $result = $num1 + $num2;
+            $symbol = '+';
+            break;
+        case 'subtract':
+        case '-':
+            $result = $num1 - $num2;
+            $symbol = '-';
+            break;
+        case 'multiply':
+        case '*':
+            $result = $num1 * $num2;
+            $symbol = '*';
+            break;
+        case 'divide':
+        case '/':
+            if ($num2 == 0) {
+                return "Error: Cannot divide by zero";
+            }
+            $result = $num1 / $num2;
+            $symbol = '/';
+            break;
+        case 'power':
+        case '**':
+            $result = pow($num1, $num2);
+            $symbol = '**';
+            break;
+        default:
+            return "Error: Invalid operation. Use add, subtract, multiply, divide, or power";
+    }
+    
+    return array(
+        'expression' => "$num1 $symbol $num2",
+        'result' => $result,
+        'operation' => $operation
+    );
+}
+
+// Test the calculator
+$tests = array(
+    array(10, 5, 'add'),
+    array(20, 3, 'multiply'),
+    array(100, 0, 'divide'),
+    array(2, 8, 'power')
+);
+
+foreach ($tests as $test) {
+    $result = calculator($test[0], $test[1], $test[2]);
+    if (is_array($result)) {
+        echo $result['expression'] . " = " . $result['result'] . "\n";
+    } else {
+        echo $result . "\n";
+    }
+}
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- External Resources -->
+                <section class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">External Resources</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.php.net/manual/en/functions.user-defined.php" target="_blank" class="text-green-600 hover:text-green-800">
+                                    PHP Functions Documentation
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Official PHP documentation for user-defined functions and syntax.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.geeksforgeeks.org/php-string-functions/" target="_blank" class="text-green-600 hover:text-green-800">
+                                    PHP String Functions Guide
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Comprehensive guide to PHP string manipulation functions.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.w3schools.com/php/php_functions.asp" target="_blank" class="text-green-600 hover:text-green-800">
+                                    W3Schools PHP Functions
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Interactive tutorials on PHP functions with live examples.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://github.com/php/php-src" target="_blank" class="text-green-600 hover:text-green-800">
+                                    PHP Core Functions
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Explore the implementation of PHP's built-in functions.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Chapter Quiz -->
+                <section id="quiz" class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Chapter Quiz</h2>
+                    <p class="text-gray-600 mb-6">Test your understanding of PHP functions and strings with this interactive quiz.</p>
+                    
+                    <div class="text-center">
+                        <button onclick="startQuiz('chapter2')" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors text-lg font-semibold">
+                            Start Chapter 2 Quiz
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">3 questions • Multiple choice & true/false</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+        
+        // Bookmark functionality
+        function toggleBookmark(chapter) {
+            const button = event.currentTarget;
+            button.classList.toggle('bookmarked');
+            
+            // Save to localStorage
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (button.classList.contains('bookmarked')) {
+                if (!bookmarks.includes(chapter)) {
+                    bookmarks.push(chapter);
+                }
+            } else {
+                const index = bookmarks.indexOf(chapter);
+                if (index > -1) {
+                    bookmarks.splice(index, 1);
+                }
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+        
+        // Load bookmark status
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (bookmarks.includes('chapter2')) {
+                document.querySelector('.bookmark-btn').classList.add('bookmarked');
+            }
+        });
+    </script>
+</body>
+</html>

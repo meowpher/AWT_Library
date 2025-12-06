@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .quiz-card { transition: all 0.3s ease; }
+        .quiz-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .option-card { transition: all 0.2s ease; cursor: pointer; }
+        .option-card:hover { background-color: #f3f4f6; transform: translateX(4px); }
+        .option-card.selected { background-color: #dbeafe; border-color: #3b82f6; }
+        .option-card.correct { background-color: #dcfce7; border-color: #16a34a; }
+        .option-card.incorrect { background-color: #fef2f2; border-color: #dc2626; }
+        .progress-ring { transition: stroke-dasharray 0.3s ease; }
+        .celebration { animation: celebration 0.6s ease-out; }
+        @keyframes celebration {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 1</a>
+                    <a href="chapter2.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 2</a>
+                    <a href="chapter3.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 3</a>
+                    <a href="chapter4.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 4</a>
+                    <a href="chapter5.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 5</a>
+                    <a href="papers.html" class="text-gray-600 hover:text-blue-600 transition-colors">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Header -->
+    <section class="bg-gradient-to-r from-purple-600 to-indigo-600 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white text-center">
+                <h1 class="text-4xl font-display font-bold mb-4">Interactive PHP Quiz</h1>
+                <p class="text-xl text-purple-100 max-w-3xl mx-auto">
+                    Test your PHP knowledge with our comprehensive quiz system. Choose your difficulty level and track your progress.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Configuration -->
+    <section id="quizConfig" class="py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-display font-bold text-gray-800 mb-6 text-center">Quiz Configuration</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Chapter Selection -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Select Chapter</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="chapter" value="mixed" class="text-purple-600" checked>
+                                <span>Mixed (All Chapters)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="chapter" value="chapter1" class="text-purple-600">
+                                <span>Chapter 1: Introduction</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="chapter" value="chapter2" class="text-purple-600">
+                                <span>Chapter 2: Functions & Strings</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="chapter" value="chapter3" class="text-purple-600">
+                                <span>Chapter 3: Arrays</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="chapter" value="chapter4" class="text-purple-600">
+                                <span>Chapter 4: OOP</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="chapter" value="chapter5" class="text-purple-600">
+                                <span>Chapter 5: Files</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Difficulty Level -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Difficulty Level</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="difficulty" value="easy" class="text-green-600">
+                                <span class="flex items-center">
+                                    <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                    Easy
+                                </span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="difficulty" value="medium" class="text-yellow-600" checked>
+                                <span class="flex items-center">
+                                    <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+                                    Medium
+                                </span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="difficulty" value="hard" class="text-red-600">
+                                <span class="flex items-center">
+                                    <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                    Hard
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Question Count -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Number of Questions</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="questionCount" value="5" class="text-purple-600">
+                                <span>5 Questions (Quick)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="questionCount" value="10" class="text-purple-600" checked>
+                                <span>10 Questions (Standard)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="questionCount" value="15" class="text-purple-600">
+                                <span>15 Questions (Extended)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="questionCount" value="20" class="text-purple-600">
+                                <span>20 Questions (Comprehensive)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button onclick="startCustomQuiz()" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors text-lg font-semibold">
+                        Start Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Interface -->
+    <section id="quizInterface" class="py-12 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Quiz Progress -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800" id="quizTitle">PHP Quiz</h3>
+                        <p class="text-sm text-gray-600" id="quizProgress">Question 1 of 10</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-purple-600" id="quizTimer">10:00</div>
+                            <div class="text-sm text-gray-600">Time Left</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-green-600" id="currentScore">0</div>
+                            <div class="text-sm text-gray-600">Score</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="bg-purple-600 h-3 rounded-full transition-all duration-300" id="quizProgressBar" style="width: 10%"></div>
+                </div>
+            </div>
+            
+            <!-- Quiz Question -->
+            <div id="quizContainer" class="quiz-card bg-white rounded-lg shadow-lg p-8">
+                <!-- Question content will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Results -->
+    <section id="quizResults" class="py-12 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-purple-100 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-display font-bold text-gray-800 mb-2">Quiz Completed!</h2>
+                    <p class="text-gray-600">Great job on completing the quiz. Here's your performance summary.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="text-center p-6 bg-purple-50 rounded-lg">
+                        <div class="text-3xl font-bold text-purple-600" id="finalScore">85%</div>
+                        <div class="text-sm text-gray-600 mt-1">Final Score</div>
+                    </div>
+                    <div class="text-center p-6 bg-green-50 rounded-lg">
+                        <div class="text-3xl font-bold text-green-600" id="correctAnswers">8/10</div>
+                        <div class="text-sm text-gray-600 mt-1">Correct Answers</div>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600" id="timeTaken">5:32</div>
+                        <div class="text-sm text-gray-600 mt-1">Time Taken</div>
+                    </div>
+                </div>
+                
+                <!-- Performance Chart -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Performance by Chapter</h3>
+                    <div id="performanceChart" style="height: 300px;"></div>
+                </div>
+                
+                <!-- Answer Review -->
+                <div id="answerReview" class="space-y-4 mb-8">
+                    <!-- Review content will be dynamically loaded -->
+                </div>
+                
+                <div class="flex justify-center space-x-4">
+                    <button onclick="retakeQuiz()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                        Retake Quiz
+                    </button>
+                    <button onclick="viewDetailedResults()" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors">
+                        View Detailed Results
+                    </button>
+                    <a href="index.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-center">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Quiz Scores -->
+    <section class="py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-display font-bold text-gray-800 mb-6 text-center">Your Quiz History</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="quizHistory">
+                <!-- Quiz history will be dynamically loaded -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        let quizTimer;
+        let currentQuizConfig = {};
+        let quizStartTime;
+        
+        // Start custom quiz based on configuration
+        function startCustomQuiz() {
+            const chapter = document.querySelector('input[name="chapter"]:checked').value;
+            const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+            const questionCount = parseInt(document.querySelector('input[name="questionCount"]:checked').value);
+            
+            currentQuizConfig = { chapter, difficulty, questionCount };
+            
+            // Hide config, show quiz interface
+            document.getElementById('quizConfig').classList.add('hidden');
+            document.getElementById('quizInterface').classList.remove('hidden');
+            
+            // Start the quiz
+            if (chapter === 'mixed') {
+                startMixedQuiz(difficulty, questionCount);
+            } else {
+                startChapterQuiz(chapter, difficulty, questionCount);
+            }
+        }
+        
+        function startMixedQuiz(difficulty, questionCount) {
+            // Create mixed questions from all chapters
+            const allQuestions = [];
+            Object.keys(window.studyPlatform.quizData).forEach(chapterId => {
+                const chapter = window.studyPlatform.quizData[chapterId];
+                chapter.questions.forEach((question, index) => {
+                    allQuestions.push({
+                        ...question,
+                        chapterId,
+                        chapterTitle: chapter.title,
+                        questionIndex: index
+                    });
+                });
+            });
+            
+            // Shuffle and select questions
+            const shuffled = allQuestions.sort(() => Math.random() - 0.5);
+            const selectedQuestions = shuffled.slice(0, Math.min(questionCount, shuffled.length));
+            
+            // Initialize quiz
+            window.studyPlatform.currentQuiz = {
+                chapterId: 'mixed',
+                questions: selectedQuestions,
+                currentQuestion: 0,
+                answers: [],
+                score: 0,
+                startTime: Date.now(),
+                difficulty: difficulty
+            };
+            
+            quizStartTime = Date.now();
+            startQuizTimer(questionCount * 60); // 1 minute per question
+            displayMixedQuizQuestion();
+        }
+        
+        function startChapterQuiz(chapterId, difficulty, questionCount) {
+            if (window.studyPlatform && window.studyPlatform.startQuiz) {
+                window.studyPlatform.startQuiz(chapterId, difficulty, questionCount);
+                quizStartTime = Date.now();
+                startQuizTimer(questionCount * 60);
+            }
+        }
+        
+        function displayMixedQuizQuestion() {
+            const quiz = window.studyPlatform.currentQuiz;
+            const question = quiz.questions[quiz.currentQuestion];
+            const quizContainer = document.getElementById('quizContainer');
+            
+            if (!quizContainer || !question) return;
+            
+            const progress = ((quiz.currentQuestion + 1) / quiz.questions.length) * 100;
+            
+            // Update progress
+            document.getElementById('quizProgress').textContent = `Question ${quiz.currentQuestion + 1} of ${quiz.questions.length}`;
+            document.getElementById('quizProgressBar').style.width = `${progress}%`;
+            document.getElementById('quizTitle').textContent = `Mixed PHP Quiz (${question.chapterTitle})`;
+            
+            quizContainer.innerHTML = `
+                <div class="fade-in">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Chapter: ${question.chapterTitle}</span>
+                            <span class="text-sm text-blue-600">Score: ${quiz.score}/${quiz.currentQuestion}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                            <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mb-6">${question.question}</h3>
+                    
+                    <div id="questionOptions" class="space-y-3 mb-8">
+                        ${renderQuestionOptions(question)}
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button onclick="previousMixedQuestion()" 
+                                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                                ${quiz.currentQuestion === 0 ? 'disabled' : ''}>
+                            Previous
+                        </button>
+                        <button onclick="nextMixedQuestion()" 
+                                class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                                id="nextButton">
+                            ${quiz.currentQuestion === quiz.questions.length - 1 ? 'Finish Quiz' : 'Next Question'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderQuestionOptions(question) {
+            switch (question.type) {
+                case 'multiple':
+                    return question.options.map((option, index) => `
+                        <div class="option-card border-2 border-gray-200 rounded-lg p-4" onclick="selectOption(this, ${index})">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="answer" value="${index}" class="text-purple-600">
+                                <span>${option}</span>
+                            </label>
+                        </div>
+                    `).join('');
+                    
+                case 'truefalse':
+                    return `
+                        <div class="option-card border-2 border-gray-200 rounded-lg p-4" onclick="selectOption(this, 'true')">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="answer" value="true" class="text-purple-600">
+                                <span>True</span>
+                            </label>
+                        </div>
+                        <div class="option-card border-2 border-gray-200 rounded-lg p-4" onclick="selectOption(this, 'false')">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="radio" name="answer" value="false" class="text-purple-600">
+                                <span>False</span>
+                            </label>
+                        </div>
+                    `;
+                    
+                case 'short':
+                    return `
+                        <div class="border-2 border-gray-200 rounded-lg p-4">
+                            <input type="text" id="shortAnswer" 
+                                   class="w-full p-3 border-0 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                   placeholder="Type your answer here..."
+                                   onkeyup="updateShortAnswer(this.value)">
+                        </div>
+                    `;
+                    
+                default:
+                    return '';
+            }
+        }
+        
+        function selectOption(element, value) {
+            // Remove previous selections
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Select current option
+            element.classList.add('selected');
+            
+            // Update the radio button
+            const radio = element.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+            }
+            
+            // Store the selected answer
+            if (window.studyPlatform.currentQuiz) {
+                window.studyPlatform.currentQuiz.selectedAnswer = value;
+            }
+        }
+        
+        function updateShortAnswer(value) {
+            if (window.studyPlatform.currentQuiz) {
+                window.studyPlatform.currentQuiz.selectedAnswer = value;
+            }
+        }
+        
+        function nextMixedQuestion() {
+            const quiz = window.studyPlatform.currentQuiz;
+            if (!quiz || quiz.selectedAnswer === undefined) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+            
+            const question = quiz.questions[quiz.currentQuestion];
+            const isCorrect = window.studyPlatform.checkAnswer(question, quiz.selectedAnswer);
+            
+            // Store answer and update score
+            quiz.answers[quiz.currentQuestion] = quiz.selectedAnswer;
+            if (isCorrect) {
+                quiz.score++;
+            }
+            
+            // Clear selected answer
+            quiz.selectedAnswer = undefined;
+            
+            // Move to next question or finish
+            if (quiz.currentQuestion < quiz.questions.length - 1) {
+                quiz.currentQuestion++;
+                displayMixedQuizQuestion();
+            } else {
+                finishMixedQuiz();
+            }
+        }
+        
+        function previousMixedQuestion() {
+            const quiz = window.studyPlatform.currentQuiz;
+            if (quiz && quiz.currentQuestion > 0) {
+                quiz.currentQuestion--;
+                displayMixedQuizQuestion();
+            }
+        }
+        
+        function finishMixedQuiz() {
+            const quiz = window.studyPlatform.currentQuiz;
+            const percentage = Math.round((quiz.score / quiz.questions.length) * 100);
+            const timeSpent = Math.round((Date.now() - quizStartTime) / 1000);
+            
+            // Save score
+            if (window.studyPlatform) {
+                window.studyPlatform.currentUser.quizScores['mixed'] = {
+                    score: quiz.score,
+                    total: quiz.questions.length,
+                    percentage: percentage,
+                    timeSpent: timeSpent,
+                    date: new Date().toISOString(),
+                    difficulty: quiz.difficulty
+                };
+                window.studyPlatform.saveUserProgress();
+            }
+            
+            // Show results
+            showQuizResults(quiz.score, quiz.questions.length, percentage, timeSpent);
+        }
+        
+        function startQuizTimer(duration) {
+            let timeLeft = duration;
+            
+            quizTimer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                const timerElement = document.getElementById('quizTimer');
+                if (timerElement) {
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 60) { // Last minute
+                        timerElement.classList.add('text-red-600', 'animate-pulse');
+                    }
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(quizTimer);
+                    finishMixedQuiz();
+                }
+                
+                timeLeft--;
+            }, 1000);
+        }
+        
+        function showQuizResults(score, total, percentage, timeSpent) {
+            // Hide quiz interface, show results
+            document.getElementById('quizInterface').classList.add('hidden');
+            document.getElementById('quizResults').classList.remove('hidden');
+            
+            // Update results display
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+            document.getElementById('correctAnswers').textContent = `${score}/${total}`;
+            
+            const minutes = Math.floor(timeSpent / 60);
+            const seconds = timeSpent % 60;
+            document.getElementById('timeTaken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Create performance chart
+            createPerformanceChart();
+            
+            // Show answer review
+            showAnswerReview();
+            
+            // Add celebration animation
+            document.querySelector('.bg-white.rounded-lg.shadow-lg.p-8').classList.add('celebration');
+        }
+        
+        function createPerformanceChart() {
+            const chartDom = document.getElementById('performanceChart');
+            const myChart = echarts.init(chartDom);
+            
+            // Mock performance data by chapter
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4', 'Chapter 5'],
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    max: 100,
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                series: [{
+                    name: 'Accuracy',
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: [85, 75, 90, 80, 70],
+                    itemStyle: {
+                        color: '#8b5cf6'
+                    }
+                }]
+            };
+            
+            myChart.setOption(option);
+        }
+        
+        function showAnswerReview() {
+            const quiz = window.studyPlatform.currentQuiz;
+            const reviewContainer = document.getElementById('answerReview');
+            
+            let reviewHTML = '<h3 class="text-lg font-semibold text-gray-800 mb-4">Answer Review</h3>';
+            
+            quiz.questions.forEach((question, index) => {
+                const userAnswer = quiz.answers[index];
+                const isCorrect = window.studyPlatform.checkAnswer(question, userAnswer);
+                
+                reviewHTML += `
+                    <div class="border rounded-lg p-4 ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-medium ${isCorrect ? 'text-green-800' : 'text-red-800'}">
+                                Question ${index + 1}: ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                            </span>
+                            <span class="text-sm text-gray-500">${question.chapterTitle}</span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-2">${question.question}</p>
+                        ${!isCorrect ? `<p class="text-xs text-gray-600"><strong>Explanation:</strong> ${question.explanation}</p>` : ''}
+                    </div>
+                `;
+            });
+            
+            reviewContainer.innerHTML = reviewHTML;
+        }
+        
+        function retakeQuiz() {
+            // Reset and show config
+            document.getElementById('quizResults').classList.add('hidden');
+            document.getElementById('quizConfig').classList.remove('hidden');
+            
+            // Clear any existing quiz data
+            if (window.studyPlatform.currentQuiz) {
+                window.studyPlatform.currentQuiz = null;
+            }
+        }
+        
+        function viewDetailedResults() {
+            alert('Detailed results feature coming soon! This would show in-depth analysis of your performance.');
+        }
+        
+        // Load quiz history on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadQuizHistory();
+        });
+        
+        function loadQuizHistory() {
+            const historyContainer = document.getElementById('quizHistory');
+            const userProgress = JSON.parse(localStorage.getItem('phpStudyProgress') || '{}');
+            const quizScores = userProgress.quizScores || {};
+            
+            if (Object.keys(quizScores).length === 0) {
+                historyContainer.innerHTML = `
+                    <div class="col-span-2 text-center text-gray-500 py-8">
+                        <p>No quiz history yet. Take your first quiz to see your progress!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let historyHTML = '';
+            Object.entries(quizScores).forEach(([chapter, score]) => {
+                const date = new Date(score.date).toLocaleDateString();
+                const grade = score.percentage >= 90 ? 'Excellent' : 
+                             score.percentage >= 80 ? 'Very Good' : 
+                             score.percentage >= 70 ? 'Good' : 
+                             score.percentage >= 60 ? 'Fair' : 'Needs Improvement';
+                
+                historyHTML += `
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="font-semibold text-gray-800 capitalize">${chapter === 'mixed' ? 'Mixed Quiz' : chapter.replace('chapter', 'Chapter ')}</h4>
+                            <span class="text-sm text-gray-500">${date}</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Score:</span>
+                                <span class="font-semibold text-purple-600">${score.percentage}%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Correct:</span>
+                                <span class="font-semibold">${score.score}/${score.total}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Grade:</span>
+                                <span class="font-semibold text-green-600">${grade}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Time:</span>
+                                <span class="font-semibold">${Math.floor(score.timeSpent / 60)}:${(score.timeSpent % 60).toString().padStart(2, '0')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyContainer.innerHTML = historyHTML;
+        }
+    </script>
+</body>
+</html>

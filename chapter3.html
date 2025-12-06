@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 3: Working with Arrays - PHP Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-display { font-family: 'Playfair Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+        .code-block { background: #2d3748; border-radius: 8px; overflow: hidden; }
+        .code-header { background: #4a5568; padding: 12px 16px; font-size: 14px; color: #e2e8f0; }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: #718096; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .copy-btn:hover { background: #a0aec0; }
+        .concept-card { transition: all 0.3s ease; }
+        .concept-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .diff-table { border-collapse: collapse; width: 100%; }
+        .diff-table th, .diff-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        .diff-table th { background: #f7fafc; font-weight: 600; }
+        .bookmark-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); border: none; padding: 8px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .bookmark-btn:hover { background: white; transform: scale(1.1); }
+        .bookmark-btn.bookmarked { background: #fbbf24; color: white; }
+        .array-visual { background: #f3f4f6; border: 2px solid #d1d5db; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .array-element { display: inline-block; background: #3b82f6; color: white; padding: 8px 12px; margin: 4px; border-radius: 4px; font-family: monospace; }
+        .array-index { display: block; text-align: center; font-size: 12px; color: #6b7280; margin-top: 4px; }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-xl font-display font-bold text-gray-800">PHP Study Hub</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+                    <a href="chapter1.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 1</a>
+                    <a href="chapter2.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 2</a>
+                    <a href="chapter3.html" class="text-blue-600 font-medium">Chapter 3</a>
+                    <a href="chapter4.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 4</a>
+                    <a href="chapter5.html" class="text-gray-600 hover:text-blue-600 transition-colors">Chapter 5</a>
+                    <a href="papers.html" class="text-gray-600 hover:text-blue-600 transition-colors">Papers</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chapter Header -->
+    <section class="bg-gradient-to-r from-purple-600 to-indigo-600 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-white">
+                <nav class="text-purple-200 mb-4">
+                    <a href="index.html" class="hover:text-white">Home</a> / 
+                    <span>Chapter 3</span>
+                </nav>
+                <h1 class="text-4xl font-display font-bold mb-4">Working with Arrays</h1>
+                <p class="text-xl text-purple-100 max-w-3xl">
+                    Explore PHP arrays including indexed arrays, associative arrays, multidimensional arrays, and comprehensive array manipulation functions.
+                </p>
+                <button class="bookmark-btn" onclick="toggleBookmark('chapter3')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-24">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Table of Contents</h3>
+                    <nav class="space-y-2">
+                        <a href="#introduction" class="block text-blue-600 hover:text-blue-800 py-1">Array Introduction</a>
+                        <a href="#types" class="block text-gray-600 hover:text-blue-600 py-1">Types of Arrays</a>
+                        <a href="#indexed" class="block text-gray-600 hover:text-blue-600 py-1">Indexed Arrays</a>
+                        <a href="#associative" class="block text-gray-600 hover:text-blue-600 py-1">Associative Arrays</a>
+                        <a href="#multidimensional" class="block text-gray-600 hover:text-blue-600 py-1">Multidimensional Arrays</a>
+                        <a href="#functions" class="block text-gray-600 hover:text-blue-600 py-1">Array Functions</a>
+                        <a href="#examples" class="block text-gray-600 hover:text-blue-600 py-1">Code Examples</a>
+                        <a href="#quiz" class="block text-gray-600 hover:text-blue-600 py-1">Chapter Quiz</a>
+                    </nav>
+                    
+                    <div class="mt-6 pt-6 border-t">
+                        <button onclick="startQuiz('chapter3')" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                <!-- Array Introduction -->
+                <section id="introduction" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Introduction to Arrays</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 mb-4">
+                            An array is a group of elements of similar data type that stores multiple values in a single variable. Arrays are fundamental data structures in PHP that allow you to store and manipulate collections of data efficiently.
+                        </p>
+                        
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                            <h4 class="font-semibold text-purple-800 mb-2">Key Features of Arrays:</h4>
+                            <ul class="space-y-2 text-purple-700">
+                                <li>• Store multiple values in a single variable</li>
+                                <li>• Access elements using numeric or string indices</li>
+                                <li>• Dynamic sizing (can grow or shrink)</li>
+                                <li>• Support for mixed data types</li>
+                                <li>• Built-in functions for manipulation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="array-visual">
+                            <h4 class="font-semibold text-gray-800 mb-3">Visual Representation:</h4>
+                            <div class="mb-4">
+                                <div class="array-element">Value 1<div class="array-index">Index 0</div></div>
+                                <div class="array-element">Value 2<div class="array-index">Index 1</div></div>
+                                <div class="array-element">Value 3<div class="array-index">Index 2</div></div>
+                                <div class="array-element">Value 4<div class="array-index">Index 3</div></div>
+                            </div>
+                            <p class="text-sm text-gray-600">Example: Array with 4 elements at indices 0, 1, 2, 3</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Types of Arrays -->
+                <section id="types" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Types of Arrays in PHP</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP supports three main types of arrays, each with different characteristics and use cases:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">Indexed Arrays</h4>
+                            <p class="text-blue-700 text-sm">Arrays with numeric indices starting from 0</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-800 mb-2">Associative Arrays</h4>
+                            <p class="text-green-700 text-sm">Arrays with string keys for named indices</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800 mb-2">Multidimensional Arrays</h4>
+                            <p class="text-purple-700 text-sm">Arrays containing other arrays as elements</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Important Notes:</h4>
+                        <ul class="space-y-1 text-yellow-700">
+                            <li>• PHP arrays are zero-indexed (first element is at index 0)</li>
+                            <li>• Arrays can contain mixed data types</li>
+                            <li>• Array size is dynamic and can change at runtime</li>
+                            <li>• PHP automatically handles memory management for arrays</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Indexed Arrays -->
+                <section id="indexed" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Indexed Arrays</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Indexed arrays use numeric indices to access elements. The index starts at 0 and increments by 1 for each element.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Indexed Array Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Method 1: Using array() function
+$numbers = array(10, 20, 30, 40, 50);
+$fruits = array("Apple", "Banana", "Orange", "Mango");
+
+// Method 2: Using short array syntax (PHP 5.4+)
+$colors = ["Red", "Green", "Blue", "Yellow"];
+$scores = [85, 92, 78, 95, 88];
+
+// Accessing elements
+echo $fruits[0];     // Output: Apple
+echo $fruits[2];     // Output: Orange
+echo $scores[3];     // Output: 95
+
+// Modifying elements
+$fruits[1] = "Grape";    // Change Banana to Grape
+$scores[4] = 90;         // Change 88 to 90
+
+// Adding elements
+$fruits[] = "Peach";     // Add to the end
+array_push($colors, "Purple");  // Add to the end
+
+// Array length
+echo count($numbers);   // Output: 5
+echo sizeof($fruits);   // Output: 5 (sizeof is alias of count)
+
+// Looping through indexed array
+echo "Fruits list:\n";
+for($i = 0; $i < count($fruits); $i++) {
+    echo ($i + 1) . ". " . $fruits[$i] . "\n";
+}
+
+// Using foreach loop
+echo "\nColors list:\n";
+foreach($colors as $color) {
+    echo $color . "\n";
+}
+
+// Using foreach with index
+echo "\nScores with index:\n";
+foreach($scores as $index => $score) {
+    echo "Index $index: $score\n";
+}
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="array-visual">
+                        <h4 class="font-semibold text-gray-800 mb-3">Indexed Array Visualization:</h4>
+                        <div class="mb-4">
+                            <div class="array-element">Apple<div class="array-index">0</div></div>
+                            <div class="array-element">Banana<div class="array-index">1</div></div>
+                            <div class="array-element">Orange<div class="array-index">2</div></div>
+                            <div class="array-element">Mango<div class="array-index">3</div></div>
+                        </div>
+                        <p class="text-sm text-gray-600">$fruits = ["Apple", "Banana", "Orange", "Mango"]</p>
+                    </div>
+                </section>
+
+                <!-- Associative Arrays -->
+                <section id="associative" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Associative Arrays</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Associative arrays use named keys instead of numeric indices. This makes arrays more readable and meaningful when working with structured data.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Associative Array Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Creating associative arrays
+$student = array(
+    "name" => "John Doe",
+    "age" => 20,
+    "grade" => "A",
+    "city" => "New York"
+);
+
+$product = [
+    "id" => 101,
+    "name" => "Laptop",
+    "price" => 899.99,
+    "in_stock" => true
+];
+
+// Accessing elements using keys
+echo $student["name"];      // Output: John Doe
+echo $student["age"];       // Output: 20
+echo $product["price"];     // Output: 899.99
+
+// Modifying elements
+$student["grade"] = "A+";
+$product["price"] = 799.99;
+
+// Adding new key-value pairs
+$student["email"] = "john@example.com";
+$product["category"] = "Electronics";
+
+// Looping through associative array
+echo "Student Information:\n";
+foreach($student as $key => $value) {
+    echo ucfirst($key) . ": " . $value . "\n";
+}
+
+// Using array_keys() and array_values()
+$keys = array_keys($product);
+$values = array_values($product);
+
+echo "\nProduct Keys: " . implode(", ", $keys);
+echo "\nProduct Values: " . implode(", ", $values);
+
+// Checking if key exists
+if (array_key_exists("name", $student)) {
+    echo "\nStudent name exists: " . $student["name"];
+}
+
+// Getting all keys
+$studentKeys = array_keys($student);
+echo "\nStudent has " . count($studentKeys) . " properties";
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                        <h4 class="font-semibold text-green-800 mb-2">When to Use Associative Arrays:</h4>
+                        <ul class="space-y-1 text-green-700">
+                            <li>• When data has natural identifiers (name, id, email)</li>
+                            <li>• For configuration settings</li>
+                            <li>• For database records</li>
+                            <li>• For structured data with named fields</li>
+                            <li>• When readability is important</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Multidimensional Arrays -->
+                <section id="multidimensional" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Multidimensional Arrays</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Multidimensional arrays are arrays that contain other arrays as elements. They are useful for representing complex data structures like tables, matrices, or hierarchical data.
+                    </p>
+                    
+                    <div class="code-block relative mb-6">
+                        <div class="code-header">Multidimensional Array Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// 2D Array - Students with their details
+$students = array(
+    array("John", "Doe", 20, "A"),
+    array("Jane", "Smith", 19, "B"),
+    array("Bob", "Johnson", 21, "A+")
+);
+
+// 2D Associative Array
+$students_assoc = [
+    [
+        "first_name" => "John",
+        "last_name" => "Doe",
+        "age" => 20,
+        "grade" => "A"
+    ],
+    [
+        "first_name" => "Jane",
+        "last_name" => "Smith",
+        "age" => 19,
+        "grade" => "B"
+    ]
+];
+
+// 3D Array - Multiple classes
+$school = [
+    "Class A" => [
+        ["John", "Math", 85],
+        ["Jane", "Math", 92]
+    ],
+    "Class B" => [
+        ["Bob", "Math", 78],
+        ["Alice", "Math", 88]
+    ]
+];
+
+// Accessing multidimensional array elements
+echo $students[0][0];           // Output: John
+echo $students[1][2];           // Output: 19
+echo $students_assoc[1]["first_name"];  // Output: Jane
+echo $school["Class A"][0][1];  // Output: Math
+
+// Looping through 2D array
+echo "Student Information:\n";
+foreach($students as $index => $student) {
+    echo "Student " . ($index + 1) . ": " . $student[0] . " " . $student[1] . 
+         ", Age: " . $student[2] . ", Grade: " . $student[3] . "\n";
+}
+
+// Nested loops for 3D array
+echo "\nSchool Information:\n";
+foreach($school as $class => $students) {
+    echo $class . ":\n";
+    foreach($students as $student) {
+        echo "  " . $student[0] . " - " . $student[1] . ": " . $student[2] . "\n";
+    }
+}
+
+// Matrix operations
+$matrix1 = [
+    [1, 2],
+    [3, 4]
+];
+
+$matrix2 = [
+    [5, 6],
+    [7, 8]
+];
+
+// Matrix addition
+$result = [];
+for($i = 0; $i < 2; $i++) {
+    for($j = 0; $j < 2; $j++) {
+        $result[$i][$j] = $matrix1[$i][$j] + $matrix2[$i][$j];
+    }
+}
+
+echo "\nMatrix Addition Result:\n";
+print_r($result);
+?&gt;</code></pre>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Common Uses of Multidimensional Arrays:</h4>
+                        <ul class="space-y-1 text-blue-700">
+                            <li>• Database result sets</li>
+                            <li>• Spreadsheet-like data</li>
+                            <li>• Game boards and matrices</li>
+                            <li>• Hierarchical data structures</li>
+                            <li>• Configuration files with nested settings</li>
+                            <li>• Shopping carts with product details</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Array Functions -->
+                <section id="functions" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Array Functions</h2>
+                    
+                    <p class="text-gray-700 mb-6">
+                        PHP provides a rich set of built-in functions for array manipulation. Here are some of the most commonly used array functions:
+                    </p>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="diff-table">
+                            <thead>
+                                <tr>
+                                    <th>Function</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>count()</td>
+                                    <td>Returns the number of elements in an array</td>
+                                    <td>count([1,2,3]) → 3</td>
+                                </tr>
+                                <tr>
+                                    <td>array_push()</td>
+                                    <td>Adds one or more elements to the end of an array</td>
+                                    <td>array_push($arr, 4, 5)</td>
+                                </tr>
+                                <tr>
+                                    <td>array_pop()</td>
+                                    <td>Removes and returns the last element of an array</td>
+                                    <td>array_pop([1,2,3]) → 3</td>
+                                </tr>
+                                <tr>
+                                    <td>array_merge()</td>
+                                    <td>Merges one or more arrays</td>
+                                    <td>array_merge([1,2], [3,4]) → [1,2,3,4]</td>
+                                </tr>
+                                <tr>
+                                    <td>sort()</td>
+                                    <td>Sorts an array in ascending order</td>
+                                    <td>sort([3,1,4]) → [1,3,4]</td>
+                                </tr>
+                                <tr>
+                                    <td>rsort()</td>
+                                    <td>Sorts an array in descending order</td>
+                                    <td>rsort([3,1,4]) → [4,3,1]</td>
+                                </tr>
+                                <tr>
+                                    <td>in_array()</td>
+                                    <td>Checks if a value exists in an array</td>
+                                    <td>in_array(2, [1,2,3]) → true</td>
+                                </tr>
+                                <tr>
+                                    <td>array_search()</td>
+                                    <td>Searches for a value and returns its key</td>
+                                    <td>array_search(2, [1,2,3]) → 1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="code-block relative">
+                        <div class="code-header">Array Functions Examples</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Array manipulation functions
+$numbers = [5, 2, 8, 1, 9];
+
+// Add elements
+array_push($numbers, 10, 11);
+print_r($numbers);  // [5, 2, 8, 1, 9, 10, 11]
+
+// Remove last element
+$last = array_pop($numbers);
+echo "Removed: $last\n";  // Removed: 11
+
+// Sort array
+sort($numbers);
+print_r($numbers);  // [1, 2, 5, 8, 9, 10]
+
+// Reverse sort
+rsort($numbers);
+print_r($numbers);  // [10, 9, 8, 5, 2, 1]
+
+// Check if value exists
+if (in_array(5, $numbers)) {
+    echo "Number 5 exists in array\n";
+}
+
+// Find key of value
+$key = array_search(8, $numbers);
+echo "Value 8 found at index: $key\n";  // Index: 2
+
+// Merge arrays
+$array1 = ["a", "b", "c"];
+$array2 = ["d", "e", "f"];
+$merged = array_merge($array1, $array2);
+print_r($merged);  // ["a", "b", "c", "d", "e", "f"]
+
+// Slice array
+$sliced = array_slice($merged, 2, 3);
+print_r($sliced);  // ["c", "d", "e"]
+
+// Unique values
+$duplicates = [1, 2, 2, 3, 3, 3, 4];
+$unique = array_unique($duplicates);
+print_r($unique);  // [1, 2, 3, 4]
+
+// Filter array
+$numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+$even = array_filter($numbers, function($n) {
+    return $n % 2 == 0;
+});
+print_r($even);  // [2, 4, 6, 8, 10]
+
+// Map array
+$squared = array_map(function($n) {
+    return $n * $n;
+}, $numbers);
+print_r($squared);  // [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+?&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section id="examples" class="bg-white rounded-lg shadow-lg p-8 concept-card">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Practical Code Examples</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 1: Student Management System</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">Student Records with Arrays</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Student management system using multidimensional arrays
+$students = [
+    [
+        "id" => 101,
+        "name" => "John Doe",
+        "age" => 20,
+        "grades" => ["Math" => 85, "English" => 92, "Science" => 78],
+        "email" => "john@example.com"
+    ],
+    [
+        "id" => 102,
+        "name" => "Jane Smith",
+        "age" => 19,
+        "grades" => ["Math" => 90, "English" => 88, "Science" => 94],
+        "email" => "jane@example.com"
+    ],
+    [
+        "id" => 103,
+        "name" => "Bob Johnson",
+        "age" => 21,
+        "grades" => ["Math" => 76, "English" => 82, "Science" => 85],
+        "email" => "bob@example.com"
+    ]
+];
+
+// Function to calculate average grade
+function calculateAverage($grades) {
+    return array_sum($grades) / count($grades);
+}
+
+// Function to find top student
+function findTopStudent($students) {
+    $topStudent = null;
+    $highestAverage = 0;
+    
+    foreach($students as $student) {
+        $average = calculateAverage($student["grades"]);
+        if ($average > $highestAverage) {
+            $highestAverage = $average;
+            $topStudent = $student;
+        }
+    }
+    
+    return $topStudent;
+}
+
+// Display student information
+echo "STUDENT RECORDS\n";
+echo "================\n\n";
+
+foreach($students as $student) {
+    echo "ID: " . $student["id"] . "\n";
+    echo "Name: " . $student["name"] . "\n";
+    echo "Age: " . $student["age"] . "\n";
+    echo "Email: " . $student["email"] . "\n";
+    
+    echo "Grades:\n";
+    foreach($student["grades"] as $subject => $grade) {
+        echo "  $subject: $grade\n";
+    }
+    
+    $average = calculateAverage($student["grades"]);
+    echo "Average: " . number_format($average, 2) . "\n";
+    echo "Grade: " . ($average >= 90 ? "A" : ($average >= 80 ? "B" : ($average >= 70 ? "C" : "D"))) . "\n";
+    echo "-" . str_repeat("-", 30) . "\n";
+}
+
+// Find and display top student
+$topStudent = findTopStudent($students);
+echo "\nTOP STUDENT:\n";
+echo "============\n";
+echo "Name: " . $topStudent["name"] . "\n";
+echo "Average: " . number_format(calculateAverage($topStudent["grades"]), 2) . "\n";
+
+// Class statistics
+$mathGrades = array_column(array_column($students, "grades"), "Math");
+$englishGrades = array_column(array_column($students, "grades"), "English");
+$scienceGrades = array_column(array_column($students, "grades"), "Science");
+
+echo "\nCLASS STATISTICS:\n";
+echo "=================\n";
+echo "Math Average: " . number_format(array_sum($mathGrades) / count($mathGrades), 2) . "\n";
+echo "English Average: " . number_format(array_sum($englishGrades) / count($englishGrades), 2) . "\n";
+echo "Science Average: " . number_format(array_sum($scienceGrades) / count($scienceGrades), 2) . "\n";
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Example 2: Shopping Cart System</h4>
+                            <div class="code-block relative">
+                                <div class="code-header">E-commerce Shopping Cart</div>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre class="p-4 text-sm overflow-x-auto"><code class="language-php">&lt;?php
+// Shopping cart system using arrays
+$products = [
+    101 => ["name" => "Laptop", "price" => 899.99, "stock" => 15],
+    102 => ["name" => "Mouse", "price" => 29.99, "stock" => 50],
+    103 => ["name" => "Keyboard", "price" => 79.99, "stock" => 30],
+    104 => ["name" => "Monitor", "price" => 299.99, "stock" => 20],
+    105 => ["name" => "Headphones", "price" => 149.99, "stock" => 25]
+];
+
+$cart = [
+    101 => 2,  // 2 laptops
+    103 => 1,  // 1 keyboard
+    105 => 3   // 3 headphones
+];
+
+// Function to add item to cart
+function addToCart(&$cart, $productId, $quantity = 1) {
+    if (isset($cart[$productId])) {
+        $cart[$productId] += $quantity;
+    } else {
+        $cart[$productId] = $quantity;
+    }
+}
+
+// Function to remove item from cart
+function removeFromCart(&$cart, $productId) {
+    unset($cart[$productId]);
+}
+
+// Function to update quantity
+function updateQuantity(&$cart, $productId, $quantity) {
+    if ($quantity <= 0) {
+        removeFromCart($cart, $productId);
+    } else {
+        $cart[$productId] = $quantity;
+    }
+}
+
+// Function to calculate total
+function calculateTotal($cart, $products) {
+    $total = 0;
+    foreach($cart as $productId => $quantity) {
+        if (isset($products[$productId])) {
+            $total += $products[$productId]["price"] * $quantity;
+        }
+    }
+    return $total;
+}
+
+// Function to display cart
+function displayCart($cart, $products) {
+    echo "SHOPPING CART\n";
+    echo "=============\n\n";
+    
+    if (empty($cart)) {
+        echo "Your cart is empty.\n";
+        return;
+    }
+    
+    $total = 0;
+    foreach($cart as $productId => $quantity) {
+        $product = $products[$productId];
+        $itemTotal = $product["price"] * $quantity;
+        $total += $itemTotal;
+        
+        echo sprintf("%-15s x %-3d = $%8.2f\n", 
+            $product["name"], 
+            $quantity, 
+            $itemTotal
+        );
+    }
+    
+    echo "-" . str_repeat("-", 30) . "\n";
+    echo sprintf("%-19s = $%8.2f\n", "TOTAL", $total);
+}
+
+// Function to find products by price range
+function findProductsByPriceRange($products, $minPrice, $maxPrice) {
+    $result = [];
+    foreach($products as $id => $product) {
+        if ($product["price"] >= $minPrice && $product["price"] <= $maxPrice) {
+            $result[$id] = $product;
+        }
+    }
+    return $result;
+}
+
+// Demonstration
+displayCart($cart, $products);
+
+// Add more items
+addToCart($cart, 102, 2);  // Add 2 mice
+addToCart($cart, 104, 1);  // Add 1 monitor
+
+echo "\nAfter adding more items:\n";
+displayCart($cart, $products);
+
+// Update quantity
+updateQuantity($cart, 101, 1);  // Change laptop quantity to 1
+
+echo "\nAfter updating laptop quantity:\n";
+displayCart($cart, $products);
+
+// Find affordable products
+$affordable = findProductsByPriceRange($products, 0, 100);
+echo "\nAffordable Products (under $100):\n";
+echo "==================================\n";
+foreach($affordable as $id => $product) {
+    echo sprintf("%-12s: $%6.2f (Stock: %d)\n", 
+        $product["name"], 
+        $product["price"], 
+        $product["stock"]
+    );
+}
+
+// Calculate total items and value
+echo "\nCART SUMMARY:\n";
+echo "=============\n";
+echo "Total Items: " . array_sum($cart) . "\n";
+echo "Total Value: $" . number_format(calculateTotal($cart, $products), 2) . "\n";
+echo "Unique Products: " . count($cart) . "\n";
+?&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- External Resources -->
+                <section class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">External Resources</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.php.net/manual/en/language.types.array.php" target="_blank" class="text-purple-600 hover:text-purple-800">
+                                    PHP Arrays Documentation
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Official PHP documentation for arrays with detailed explanations and examples.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.geeksforgeeks.org/php-arrays/" target="_blank" class="text-purple-600 hover:text-purple-800">
+                                    PHP Arrays Tutorial
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Comprehensive tutorial covering all aspects of PHP arrays with practical examples.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://www.w3schools.com/php/php_arrays.asp" target="_blank" class="text-purple-600 hover:text-purple-800">
+                                    W3Schools PHP Arrays
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Interactive PHP arrays tutorial with live code examples and exercises.</p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-semibold text-gray-800 mb-2">
+                                <a href="https://github.com/php/php-src" target="_blank" class="text-purple-600 hover:text-purple-800">
+                                    PHP Array Functions
+                                </a>
+                            </h4>
+                            <p class="text-gray-600 text-sm">Explore the implementation of PHP's array functions in the core source code.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Chapter Quiz -->
+                <section id="quiz" class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-display font-bold text-gray-800 mb-6">Chapter Quiz</h2>
+                    <p class="text-gray-600 mb-6">Test your understanding of PHP arrays with this interactive quiz.</p>
+                    
+                    <div class="text-center">
+                        <button onclick="startQuiz('chapter3')" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors text-lg font-semibold">
+                            Start Chapter 3 Quiz
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">3 questions • Multiple choice & true/false</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-display font-bold mb-2">PHP Study Hub</h3>
+                <p class="text-gray-400 mb-4">Comprehensive PHP learning platform for students and professionals.</p>
+                <div class="text-sm text-gray-500">
+                    © 2024 PHP Study Hub. Educational content for learning purposes.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+        
+        // Bookmark functionality
+        function toggleBookmark(chapter) {
+            const button = event.currentTarget;
+            button.classList.toggle('bookmarked');
+            
+            // Save to localStorage
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (button.classList.contains('bookmarked')) {
+                if (!bookmarks.includes(chapter)) {
+                    bookmarks.push(chapter);
+                }
+            } else {
+                const index = bookmarks.indexOf(chapter);
+                if (index > -1) {
+                    bookmarks.splice(index, 1);
+                }
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+        
+        // Load bookmark status
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (bookmarks.includes('chapter3')) {
+                document.querySelector('.bookmark-btn').classList.add('bookmarked');
+            }
+        });
+    </script>
+</body>
+</html>
